@@ -1,0 +1,166 @@
+{% extends "layout.html" %} {% block title %} Buy & Sell Bitcoin and Altercoins
+| Cryptocurrency Exchange {% endblock %} {% block left_nav %}
+<div class="main-nav--left centeriod">
+	<a href="/login" class="login">Log in</a>
+	<a href="/register" class="btn-cta ls-small">Register</a>
+</div>
+{% endblock %} {% block main %}
+<section class="section-intro container">
+	<h1 class="intro-heading center-text">Enjoy the crypto world at no cost</h1>
+	<p class="intro-content ls-small center-text">
+		CoinSavvy is the easiest place to simulate your crypto portfolio.<br />
+		Join CoinSavvy now and get $10,000 deposit for FREE!
+	</p>
+
+	<a href="/register" class="btn-cta ls-small">Get started</a>
+</section>
+
+<section class="section-showcase container observe">
+	<div class="showcase center-text">
+		<div class="showcase-box">
+			<span class="showcase-box--number ls-m">$10,000</span>
+			<p class="showcase-box--content ls-small">
+				Free deposit in yout wallet once registered
+			</p>
+		</div>
+
+		<!-- <div class="showcase-box">
+  <span class="showcase-box--number ls-m">0.00%</span>
+  <p class="showcase-box--content ls-small">
+    Transcation fees for all trading
+  </p>
+</div> -->
+
+		<div class="showcase-box">
+			<span class="showcase-box--number ls-m">99+</span>
+			<p class="showcase-box--content ls-small">Cryptocurrencies listed</p>
+		</div>
+
+		<div class="showcase-box">
+			<span class="showcase-box--number ls-m">24/7</span>
+			<p class="showcase-box--content ls-small">
+				Access on cryptocurrencies trading
+			</p>
+		</div>
+	</div>
+</section>
+
+<div class="section-market container" id="market">
+	<h2 class="section-heading">Market Trend</h2>
+
+	<div class="market-row market-row--head">
+		<span>Name</span>
+		<span>Price</span>
+		<span>24h Change</span>
+		<span class="coin-marketcap">Market Cap</span>
+	</div>
+
+	{% for coin in coins %}
+	<div class="market-row market-row--coin items {{ coin.symbol }}">
+		<div class="coin-info">
+			<img
+				src="{{ coin.image }}"
+				alt="{{ coin.name }} logo"
+				class="coin-logo"
+			/>
+			<span class="coin-name name">{{ coin.name }}</span>
+			<span class="coin-symbol symbol">{{ coin.symbol }}</span>
+		</div>
+		<span class="coin-price ls-small price">{{ coin.price | usd }}</span>
+		{% if coin.change > 0 %}
+		<span class="coin-change ls-small change"
+			>+{{ coin.change | percent }}</span
+		>
+		{% else %}
+		<span class="coin-change ls-small change">{{ coin.change | percent }}</span>
+		{% endif %}
+		<span class="coin-marketcap ls-small marketcap">${{ coin.market }}M</span>
+	</div>
+	{% endfor %}
+</div>
+
+<section class="section-features container">
+	<h2 class="section-heading">Quick features</h2>
+	<div class="section-desc ls-small">
+		<p>
+			A powerful Bitcoin and cryptocurrency exchange with innovative features in
+			your pocket.
+		</p>
+	</div>
+
+	<div class="features">
+		<div class="feature-box">
+			<img
+				src="../static/images/icons/bolt.svg"
+				alt="bolt icon svg"
+				class="feature-icon"
+			/>
+			<h3 class="feature-title ls-small">Instant Trading</h3>
+			<p class="feature-content">Real-time balance and profit update</p>
+		</div>
+
+		<div class="feature-box">
+			<img
+				src="../static/images/icons/hand-holding-usd.svg"
+				alt="bolt icon svg"
+				class="feature-icon"
+			/>
+			<h3 class="feature-title ls-small">Risk Free</h3>
+			<p class="feature-content">
+				No need to risk your money to get experiences in crypto.
+			</p>
+		</div>
+
+		<div class="feature-box">
+			<img
+				src="../static/images/icons/smile.svg"
+				alt="bolt icon svg"
+				class="feature-icon"
+			/>
+			<h3 class="feature-title ls-small">Simple UI</h3>
+			<p class="feature-content">User friendly and easy to use interface</p>
+		</div>
+
+		<div class="feature-box">
+			<img
+				src="../static/images/icons/shield-check.svg"
+				alt="bolt icon svg"
+				class="feature-icon"
+			/>
+			<h3 class="feature-title ls-small">Privacy</h3>
+			<p class="feature-content">
+				We wouldn't ask any of your personal information
+			</p>
+		</div>
+	</div>
+</section>
+
+<section class="section-prefooter">
+	<h2>Start with Bitcoin Now</h2>
+	<a href="/register" class="btn-cta ls-small">Register Now</a>
+</section>
+
+{% endblock %}
+
+<!-- {% for coin in coins %}
+<tr class="items {{ coin.symbol }}">
+  <td class="text-start">
+    <img
+      class="logo"
+      src="https://cryptologos.cc/logos/{{ coin.name.lower() }}-{{ coin.symbol.lower() }}-logo.svg?v=021"
+      alt="{{ coin.name }} logo"
+    />
+  </td>
+  <td class="text-start name">{{ coin.name }}</td>
+  <td class="text-start symbol">{{ coin.symbol }}</td>
+  <td class="text-end price">{{ coin.price | usd }}</td>
+  {% if coin.change > 0 %}
+  <td class="text-end change">+{{ coin.change | percent }}</td>
+  {% else %}
+  <td class="text-end change">{{ coin.change | percent }}</td>
+  {% endif %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div> -->

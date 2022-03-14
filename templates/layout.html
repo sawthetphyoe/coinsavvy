@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Savvycoin is a simulation web app for cryptocurrency trading. Don't risk your money on something you don't know about. Get experiences in crypto trading with Savvycoin before you dive right into the crypto world."
+		/>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+			rel="stylesheet"
+		/>
+
+		<link rel="icon" href="../static/images/favicon.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="../static/css/general.css" />
+		<link rel="stylesheet" href="../static/css/utilities.css" />
+		<link rel="stylesheet" href="../static/css/styles.css" />
+		<title>Savvycoin - {% block title %} {% endblock %}</title>
+	</head>
+
+	<body>
+		<header class="header">
+			<nav class="main-nav">
+				<div class="main-nav--right">
+					<a href="/" class="logo centeriod"
+						><img
+							src="../static/images/icons/logo.svg"
+							alt="Savvycoin logo"
+							id="logo-img"
+						/>
+						<span id="logo-name">COINSAVVY</span>
+					</a>
+					<div class="right-links centeriod">
+						<a href="#"
+							>Products
+							<img
+								src="../static/images/icons/sort-down.svg"
+								alt="sort icon"
+								class="sort-down"
+						/></a>
+						<a href="/markets">Markets</a>
+						<!-- <a href="#">About</a> -->
+					</div>
+				</div>
+
+				{% block left_nav %} {% endblock %}
+			</nav>
+		</header>
+		<main>{% block main %}{% endblock %}</main>
+		{% if footer %}
+		<footer class="footer-container container">
+			<div class="footer">
+				<div class="footer-box">
+					<a href="/" class="logo centeriod"
+						><img
+							src="../static/images/icons/logo.svg"
+							alt="Savvycoin logo"
+							id="logo-img"
+						/>
+						<span id="logo-name">COINSAVVY</span>
+					</a>
+
+					<div class="social-links">
+						<a href="#"
+							><img
+								src="../static/images/icons/brands/facebook.svg"
+								alt="facebook icon"
+						/></a>
+
+						<a href="#"
+							><img
+								src="../static/images/icons/brands/twitter.svg"
+								alt="twitter icon"
+						/></a>
+
+						<a href="#"
+							><img
+								src="../static/images/icons/brands/instagram.svg"
+								alt="instagram icon"
+						/></a>
+
+						<a href="#"
+							><img
+								src="../static/images/icons/brands/reddit.svg"
+								alt="reddit icon"
+						/></a>
+					</div>
+				</div>
+
+				<div class="footer-box">
+					<h3 class="footer-box--title">Company</h3>
+					<ul class="footer-box--links">
+						<li><a href="#">About Us</a></li>
+						<li><a href="#">Legal & Privacy</a></li>
+						<li><a href="#">Referral Program</a></li>
+						<li><a href="#">Careers</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-box">
+					<h3 class="footer-box--title">Services</h3>
+					<ul class="footer-box--links">
+						<li><a href="#">Downloads</a></li>
+						<li><a href="#">Desktop Application</a></li>
+						<li><a href="#">Mobile Application</a></li>
+						<li><a href="#">API Documentation</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-box">
+					<h3 class="footer-box--title">Learn</h3>
+					<ul class="footer-box--links">
+						<li><a href="#">Prices</a></li>
+						<li><a href="#">Buy Bitcoin</a></li>
+						<li><a href="#">Buy Ethereum</a></li>
+						<li><a href="#">Buy Bitcoin Cash</a></li>
+						<li><a href="#">Buy Litecoin</a></li>
+						<li><a href="#">Buy SHIB</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-box">
+					<h3 class="footer-box--title">Support</h3>
+					<ul class="footer-box--links">
+						<li><a href="#">Support Center</a></li>
+						<li><a href="#">Give Us Feedback</a></li>
+						<li><a href="#">Submit a request</a></li>
+						<li><a href="#">Trading Rules</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<div class="copyright">
+			<span>&COPY; 2019-2022 CoinSavvy, Inc. All Rights Reserved</span>
+		</div>
+		{% endif %}
+	</body>
+	<script src="../static/js/test.js"></script>
+</html>

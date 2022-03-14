@@ -1,0 +1,52 @@
+{% extends "layout.html" %} {% block title %} Create account {% endblock %} {%
+block left_nav %}
+<div class="main-nav--left login-nav--left centeriod">
+	<span class="already">Already have an account?</span>
+	<a href="/login" class="btn-cta ls-small">Log in</a>
+</div>
+{% endblock %} {% block main %}
+
+<form action="" class="login-form container">
+	<h3 class="login-heading center-text">Create your account</h3>
+	<div class="form-input-group">
+		<label for="username" class="form-label">Username</label>
+		<input
+			type="text"
+			name="username"
+			id="username"
+			placeholder="Username"
+			class="form-input"
+			autofocus
+			autocomplete="off"
+		/>
+	</div>
+
+	<div class="form-input-group">
+		<label for="password" class="form-label">Password</label>
+		<input
+			type="password"
+			name="password"
+			id="password"
+			placeholder="Password"
+			class="form-input"
+		/>
+	</div>
+
+	<div class="form-input-group">
+		<label for="confirm" class="form-label">Confirm Password</label>
+		<input
+			type="password"
+			name="confirm"
+			id="confirm"
+			placeholder="Password"
+			class="form-input"
+		/>
+	</div>
+	<input type="submit" value="Create account" class="btn-cta" id="submit" />
+</form>
+<div class="main-nav--left login-footer centeriod">
+	<span class="already">Already have an account?</span>
+	<a href="/login" class="login">Log in</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "layout.html" %} {% block title %} Markets {% endblock %} {% block
+left_nav %}
+<div class="main-nav--left centeriod">
+	<a href="/login" class="login">Log in</a>
+	<a href="/register" class="btn-cta ls-small">Register</a>
+</div>
+{% endblock %} {% block main %}
+<!-- <div class="market-head">
+	<h3 class="text-center">Markets</h3>
+</div> -->
+<div class="market-container market-container--head observe">
+	<div class="market-heading">
+		<h3>Cryptocurrencies</h3>
+		<input
+			type="search"
+			name="search"
+			id="search"
+			autocomplete="off"
+			placeholder="&#xF002; Search Coin Name"
+			style="font-family: Arial, FontAwesome; line-height: 20px"
+		/>
+	</div>
+	<div class="market-row market-row--head">
+		<span>Name</span>
+		<span>Price</span>
+		<span class="coin-change">24h Change</span>
+		<span class="coin-marketcap">Market Cap</span>
+	</div>
+</div>
+<div class="market-container market-container--coins">
+	{% for coin in coins %}
+	<div
+		class="market-row market-row--coin items {{ coin.symbol }}"
+		id="market-row--coin"
+	>
+		<div class="coin-info">
+			<img
+				src="{{ coin.image }}"
+				alt="{{ coin.name }} logo"
+				class="coin-logo"
+			/>
+			<span class="coin-name name">{{ coin.name }}</span>
+			<span class="coin-symbol symbol">{{ coin.symbol }}</span>
+		</div>
+		<span class="coin-price ls-small price">{{ coin.price | usd}}</span>
+		{% if coin.change > 0 %}
+		<span class="coin-change ls-small change"
+			>+{{ coin.change | percent }}</span
+		>
+		{% else %}
+		<span class="coin-change ls-small change">{{ coin.change | percent }}</span>
+		{% endif %}
+		<span class="coin-marketcap ls-small marketcap">${{ coin.market }}M</span>
+	</div>
+	{% endfor %}
+</div>
+<div class="market-container fill"></div>
+
+{% endblock %}

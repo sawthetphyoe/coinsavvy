@@ -1,0 +1,18 @@
+/********** Utilities **********/
+.centeriod {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.center-text {
+	text-align: center;
+}
+
+.ls-small {
+	letter-spacing: 0.05rem;
+}
+
+.ls-m {
+	letter-spacing: 0.11rem;
+}
