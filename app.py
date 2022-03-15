@@ -96,6 +96,10 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
 
+@app.route("/trade", methods=["POST", "GET"])
+def trade():
+    return render_template("trade.html", footer=True)
+
 @app.route("/search")
 def search():
     search_coins = []
