@@ -1,0 +1,276 @@
+{% extends "layout.html" %} {% block css %}
+<link rel="stylesheet" href="../static/css/trade.css" />
+{% endblock %} {% block title %} Bitcoin(BTC) Price Chart {% endblock %} {%
+block left_nav %}
+<div class="main-nav--left centeriod">
+	<a href="/login" class="login">Log in</a>
+	<a href="/register" class="btn-cta ls-small">Register</a>
+</div>
+{% endblock %} {% block main %}
+
+<main>
+	<section class="section-trading">
+		<article class="trade-article">
+			<div class="chart-container centeriod">
+				<!-- TradingView Widget BEGIN -->
+				<div class="tradingview-widget-container">
+					<div id="tradingview_539ce"></div>
+					<div class="tradingview-widget-copyright">
+						<a
+							href="https://www.tradingview.com/symbols/BTCUSD/?exchange=BINANCE"
+							rel="noopener"
+							target="_blank"
+						>
+						</a>
+					</div>
+					<script
+						type="text/javascript"
+						src="https://s3.tradingview.com/tv.js"
+					></script>
+					<script type="text/javascript">
+						new TradingView.MediumWidget({
+							symbols: [["BINANCE:BTCUSD|1D"]],
+							chartOnly: false,
+							width: "750",
+							height: "468",
+							locale: "en",
+							colorTheme: "light",
+							gridLineColor: "rgba(255, 255, 255, 0)",
+							fontColor: "#787B86",
+							isTransparent: true,
+							autosize: false,
+							showVolume: false,
+							scalePosition: "right",
+							scaleMode: "Normal",
+							fontFamily:
+								"-apple-system, BlinkMacSystemFont, SegoeUI, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+							noTimeScale: false,
+							valuesTracking: "2",
+							chartType: "area",
+							lineColor: "rgba(241, 208, 10, 1)",
+							topColor: "rgba(242, 213, 35, 0.2)",
+							bottomColor: "rgba(255, 255, 255, 0.1)",
+							container_id: "tradingview_539ce",
+						});
+					</script>
+				</div>
+				<!-- TradingView Widget END -->
+			</div>
+
+			<div class="info-container">
+				<div class="info-box info-box--price">
+					<h3 class="info-box--head">BTC Price Information</h3>
+					<div class="info-box--content">
+						<div class="info-row row-head">
+							<span>All Time High</span>
+							<span>Price Change (1h)</span>
+							<span>Price Change (24h)</span>
+							<span>Price Change (7D)</span>
+						</div>
+
+						<div class="info-row row-body">
+							<span>$ 68,789.00</span>
+							<span>-0.05%</span>
+							<span>+0,11%</span>
+							<span>-0.91%</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="info-box info-box--market">
+					<h3 class="info-box--head">BTC Market Information</h3>
+					<div class="info-box--content">
+						<div class="info-row row-head">
+							<span>Market Cap Rank</span>
+							<span>Market Change (24h)</span>
+							<span>Market Cap</span>
+							<span>Circulation Supply</span>
+						</div>
+
+						<div class="info-row row-body">
+							<span>#1</span>
+							<span>+0.34%</span>
+							<span>$ 743.57B</span>
+							<span>$ 18.9M</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+		<aside class="trade-aside">
+			<div class="trade-container">
+				<div class="trade-head">
+					<button class="buy-btn trade-btn trade-btn--active">Buy</button>
+					<button class="sell-btn trade-btn">Sell</button>
+				</div>
+
+				<div class="trade-body trade-body--buy trade-body--active">
+					<div class="trade-input--group">
+						<div class="trade-input-inside-group">
+							<label for="spend-buy" class="trade-label">Spend</label>
+							<span class="max">Max : 0 USD</span>
+						</div>
+						<div class="trade-input-inside-group">
+							<input
+								type="text"
+								placeholder="20.00 - 10000.00"
+								id="spend-buy"
+								name="spend-buy"
+								class="input-amount"
+							/>
+							<div class="trade-unit">USD</div>
+						</div>
+					</div>
+
+					<div class="trade-input--group">
+						<div class="trade-input-inside-group">
+							<label for="recieve-buy" class="trade-label">Recieve</label>
+						</div>
+						<div class="trade-input-inside-group">
+							<input
+								type="text"
+								placeholder="0.0000"
+								id="recieve-buy"
+								name="recieve-buy"
+								class="input-amount"
+							/>
+							<div class="trade-unit">BTC</div>
+						</div>
+					</div>
+					<button class="btn-cta--buy btn-cta ls-small">Buy Bitcoin</button>
+				</div>
+
+				<div class="trade-body trade-body--sell">
+					<div class="trade-input--group">
+						<div class="trade-input-inside-group">
+							<label for="spend-sell" class="trade-label">Spend</label>
+							<span class="max">Max : 0 BTC</span>
+						</div>
+						<div class="trade-input-inside-group">
+							<input
+								type="text"
+								placeholder="0.0000"
+								id="spend-sell"
+								name="spend-sell"
+								class="input-amount"
+							/>
+							<div class="trade-unit">BTC</div>
+						</div>
+					</div>
+
+					<div class="trade-input--group">
+						<div class="trade-input-inside-group">
+							<label for="recieve-sell" class="trade-label">Recieve</label>
+						</div>
+						<div class="trade-input-inside-group">
+							<input
+								type="text"
+								placeholder="20.00 - 10000.00 "
+								id="recieve-sell"
+								name="recieve-sell"
+								class="input-amount"
+							/>
+							<div class="trade-unit">USD</div>
+						</div>
+					</div>
+					<button class="btn-cta--buy btn-cta ls-small">Sell Bitcoin</button>
+				</div>
+			</div>
+
+			<div class="trend-container">
+				<h3 class="trend-heading">Trending cryptos</h3>
+
+				<div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1644979850"
+							alt="BNB logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">BNB</span>
+					</div>
+					<span class="coin-price coin-price--trend">$371.64</span>
+				</div>
+
+				<div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"
+							alt="Ethereum logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">Ethereum</span>
+					</div>
+					<span class="coin-price coin-price--trend">$2,583.74</span>
+				</div>
+
+				<div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+							alt="XRP logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">XRP</span>
+					</div>
+					<span class="coin-price coin-price--trend">$0.7986</span>
+				</div>
+
+				<div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422"
+							alt="Solana logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">Solana</span>
+					</div>
+					<span class="coin-price coin-price--trend">$81.24</span>
+				</div>
+
+				<div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860"
+							alt="Cardano logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">Cardano</span>
+					</div>
+					<span class="coin-price coin-price--trend">$0.793002</span>
+				</div>
+
+				<!-- <div class="trend-coin">
+					<div class="centeriod">
+						<img
+							src="https://assets.coingecko.com/coins/images/8284/large/luna1557227471663.png?1567147072"
+							alt="Terra logo"
+							class="coin-logo"
+						/>
+						<span class="coin-name coin-name--trend">Terra</span>
+					</div>
+					<span class="coin-price coin-price--trend">$87.01</span>
+				</div> -->
+
+				<!-- <div class="trend-coin">
+                    <div class="centeriod">
+                        <img
+                            src="https://assets.coingecko.com/coins/images/2/large/litecoin.png?1547033580"
+                            alt="Litecoin logo"
+                            class="coin-logo"
+                        />
+                        <span class="coin-name coin-name--trend">Litecoin</span>
+                    </div>
+                    <span class="coin-price coin-price--trend">$106.17</span>
+                </div> -->
+			</div>
+		</aside>
+	</section>
+
+	<section class="section-prefooter">
+		<h2>Start with Bitcoin Now</h2>
+		<a href="/register" class="btn-cta ls-small">Register Now</a>
+	</section>
+</main>
+
+{% endblock %}
