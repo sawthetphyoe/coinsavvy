@@ -5,38 +5,39 @@ left_nav %}
 	<a href="/register" class="btn-cta ls-small">Register</a>
 </div>
 {% endblock %} {% block main %}
+<main data-template="login">
+	<form action="" class="login-form container">
+		<h3 class="login-heading center-text">Log in to CoinSavvy</h3>
+		<div class="form-input-group">
+			<label for="username" class="form-label">Username</label>
+			<input
+				type="text"
+				name="username"
+				id="username"
+				placeholder="Username"
+				class="form-input"
+				autofocus
+				autocomplete="off"
+			/>
+		</div>
 
-<form action="" class="login-form container">
-	<h3 class="login-heading center-text">Log in to CoinSavvy</h3>
-	<div class="form-input-group">
-		<label for="username" class="form-label">Username</label>
-		<input
-			type="text"
-			name="username"
-			id="username"
-			placeholder="Username"
-			class="form-input"
-			autofocus
-			autocomplete="off"
-		/>
+		<div class="form-input-group">
+			<label for="password" class="form-label">Password</label>
+			<input
+				type="password"
+				name="password"
+				id="password"
+				placeholder="Password"
+				class="form-input"
+			/>
+		</div>
+
+		<input type="submit" value="Log in" class="btn-cta" id="submit" />
+	</form>
+	<div class="main-nav--left login-footer centeriod">
+		<span class="already">Don't have an account?</span>
+		<a href="/register" class="login">Register</a>
 	</div>
-
-	<div class="form-input-group">
-		<label for="password" class="form-label">Password</label>
-		<input
-			type="password"
-			name="password"
-			id="password"
-			placeholder="Password"
-			class="form-input"
-		/>
-	</div>
-
-	<input type="submit" value="Log in" class="btn-cta" id="submit" />
-</form>
-<div class="main-nav--left login-footer centeriod">
-	<span class="already">Don't have an account?</span>
-	<a href="/register" class="login">Register</a>
-</div>
+</main>
 
 {% endblock %}

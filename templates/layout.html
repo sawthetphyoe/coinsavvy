@@ -62,8 +62,7 @@
 				{% block left_nav %} {% endblock %}
 			</nav>
 		</header>
-		<main>{% block main %}{% endblock %}</main>
-		{% if footer %}
+		{% block main %}{% endblock %} {% if footer %}
 		<footer class="footer-container container">
 			<div class="footer">
 				<div class="footer-box">
@@ -151,5 +150,6 @@
 		</div>
 		{% endif %}
 	</body>
+	{% block script %} {% endblock %}
 	<!-- <script src="../static/js/test.js"></script> -->
 </html>

@@ -8,7 +8,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import  usd, percent, lookall, format_price
+from helpers import  usd, percent, looksymbol, format_price
 
 # Configure application
 app = Flask(__name__)
@@ -37,10 +37,16 @@ db = SQL("sqlite:///finance.db")
 #     symbol = s["symbol"]
 #     name = s["name"]
 #     price = s["price"]
-#     market = s["market"]
-#     change = s["change"]
+#     market_cap = s["market_cap"]
+#     market_change_24h = s["market_change_24h"]
+#     market_rank = s["market_rank"]
+#     circulation_supply = s["circulation_supply"]
+#     ath = s["ath"]
+#     price_change_1h = s["price_change_1h"]
+#     price_change_24h = s["price_change_24h"]
+#     price_change_7d = s["price_change_7d"]
 #     image = s["image"]
-#     db.execute("INSERT INTO cryptos (symbol, name, price, market, change, image) VALUES (?, ?, ?, ?, ?, ?)", symbol, name, price, market, change, image)
+#     db.execute("INSERT INTO coins (symbol, name, price, market_cap, market_change_24h, market_rank, circulation_supply, ath, price_change_1h, price_change_24h, price_change_7d, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", symbol, name, price, market_cap, market_change_24h, market_rank, circulation_supply, ath, price_change_1h, price_change_24h, price_change_7d, image)
 
 
 @app.after_request
@@ -51,38 +57,18 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-coin_symbols = ["BTC", "ETH", "BNB", "XRP", "ADA", "MATIC", "LTC"]
-
-def refresh():
-    init_values = lookall()
-    for s in init_values:
-        symbol = s["symbol"]
-        price = s["price"]
-        market = s["market"]
-        change = s["change"]
-        db.execute("UPDATE cryptos SET price = ?, market = ?, change = ? WHERE symbol = ?", price,market,change,symbol)
-
-refresh()
+index_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano", "solana"]
 
 @app.route("/")
 def index():
-    coins = db.execute("SELECT * FROM cryptos WHERE symbol IN ('BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'MATIC', 'LTC')")
+    coins = looksymbol(index_coins)
     return render_template("index.html", coins=coins, footer=True)
     """Show portfolio of stocks"""
-
-@app.route("/update", methods=["POST", "GET"])
-def update():
-    if request.method == "GET":
-        refresh()
-        rows = db.execute("SELECT * FROM cryptos")
-        # for row in rows:
-        #     row["price"] = format_price(row["price"])
-    return jsonify(rows)
 
 @app.route("/markets", methods=["POST", "GET"])
 def market():
     if request.method == "GET":
-        coins = db.execute("SELECT * FROM cryptos")
+        coins = db.execute("SELECT * FROM coins")
         return render_template("market.html", coins=coins, footer=True)
 
 
@@ -103,7 +89,7 @@ def trade():
 @app.route("/search")
 def search():
     search_coins = []
-    rows = db.execute("SELECT * FROM cryptos WHERE name LIKE ?", "%" + request.args.get("q") + "%")
+    rows = db.execute("SELECT * FROM coins WHERE name LIKE ?", "%" + request.args.get("q") + "%")
     for row in rows:
         row = {
             "symbol" : row["symbol"]
@@ -112,3 +98,16 @@ def search():
     return jsonify(search_coins)
 
 # pk_7c3455bc0bf6443e9a6a923ed8e0699b
+
+
+
+# @app.route("/update", methods=["POST", "GET"])
+# def update():
+#     if request.method == "POST":
+#         data = request.get_json()
+#         if data["template"] == "index" or data["template"] == "market":
+#             refresh(index_coins)
+#             rows = db.execute("SELECT * FROM coins WHERE symbol IN (?)", index_coins)
+#             # for row in rows:
+#             #     row["price"] = format_price(row["price"])
+#             return jsonify(rows)

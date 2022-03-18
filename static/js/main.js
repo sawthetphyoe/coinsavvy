@@ -2,14 +2,11 @@
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
 	currency: "USD",
-
-	// These options are needed to round to whole numbers if that's what you want.
-	minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-	maximumFractionDigits: 6, // (causes 2500.99 to be printed as $2,501)
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 6,
 });
 
 const items = document.querySelectorAll(".items");
-
 items.forEach(function (el) {
 	change = el.querySelector(".change");
 	if (parseFloat(change.innerHTML) > 0) {
@@ -19,26 +16,30 @@ items.forEach(function (el) {
 	}
 });
 
-const auto = function () {
+const update = function () {
+	const template = document.querySelector("main").dataset;
 	$.ajax({
-		type: "GET",
+		type: "POST",
 		url: "/update",
+		data: JSON.stringify(template),
+		contentType: "application/json",
 		dataType: "json",
 		success: function (result) {
+			console.log("success");
 			length = Object.keys(result).length;
 			for (let i = 0; i < length; i++) {
 				coin = result[i];
 				row = document.querySelector(`.${coin.symbol}`);
 				if (row) {
 					row.querySelector(".price").innerHTML = formatter.format(coin.price);
-					row.querySelector(".marketcap").innerHTML = `$${coin.market}M`;
+					row.querySelector(".marketcap").innerHTML = `$${coin.market_cap}M`;
 					change = row.querySelector(".change");
-					if (coin.change > 0) {
+					if (coin.price_change_24h > 0) {
 						change.style.color = "#16a34a";
-						change.innerHTML = "+" + coin.change.toFixed(2) + "%";
+						change.innerHTML = "+" + coin.price_change_24h.toFixed(2) + "%";
 					} else {
 						change.style.color = "#dc2626";
-						change.innerHTML = coin.change.toFixed(2) + "%";
+						change.innerHTML = coin.price_change_24h.toFixed(2) + "%";
 					}
 				}
 			}
@@ -46,7 +47,7 @@ const auto = function () {
 	});
 };
 
-setInterval(auto, 6000);
+// setInterval(update, 6000);
 
 const observeEl = document.querySelector(".observe");
 
@@ -64,18 +65,18 @@ const obs = new IntersectionObserver(
 );
 obs.observe(observeEl);
 
-let searchInput = document.querySelector("#search");
-let displayCoins = document.querySelectorAll("#market-row--coin");
-searchInput.addEventListener("input", async function () {
-	let response = await fetch("/search?q=" + searchInput.value);
-	let searchCoins = await response.json();
-	displayCoins.forEach(function (el) {
-		el.style.display = "none";
-		for (i = 0; i < searchCoins.length; i++) {
-			let displaySymbol = searchCoins[i]["symbol"];
-			if (el.classList.contains(`${displaySymbol}`)) {
-				el.style.display = "grid";
-			}
-		}
-	});
-});
+// let searchInput = document.querySelector("#search");
+// let displayCoins = document.querySelectorAll("#market-row--coin");
+// searchInput.addEventListener("input", async function () {
+// 	let response = await fetch("/search?q=" + searchInput.value);
+// 	let searchCoins = await response.json();
+// 	displayCoins.forEach(function (el) {
+// 		el.style.display = "none";
+// 		for (i = 0; i < searchCoins.length; i++) {
+// 			let displaySymbol = searchCoins[i]["symbol"];
+// 			if (el.classList.contains(`${displaySymbol}`)) {
+// 				el.style.display = "grid";
+// 			}
+// 		}
+// 	});
+// });
