@@ -62,13 +62,13 @@ a:link {
 .section-heading {
 	color: var(--gray__shade8);
 	font-size: 4.4rem;
-	margin-bottom: 3.2rem;
+	margin-bottom: 2.4rem;
 	align-self: flex-start;
 }
 
 .section-desc {
 	font-size: 2rem;
 	line-height: 3.6rem;
-	margin-bottom: 2.4rem;
+	margin-bottom: 4.8rem;
 	align-self: flex-start;
 }
