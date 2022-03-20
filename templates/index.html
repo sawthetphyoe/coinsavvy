@@ -67,18 +67,12 @@
 				<span class="coin-name name">{{ coin.name }}</span>
 				<span class="coin-symbol symbol">{{ coin.symbol }}</span>
 			</div>
-			<span class="coin-price ls-small price">{{ coin.price | usd }}</span>
-			{% if coin.price_change_24h > 0 %}
+			<span class="coin-price ls-small price">{{ coin.price }}</span>
 			<span class="coin-change ls-small change"
-				>+{{ coin.price_change_24h | percent }}</span
+				>{{ coin.price_change_24h }}</span
 			>
-			{% else %}
-			<span class="coin-change ls-small change"
-				>{{ coin.price_change_24h | percent }}</span
-			>
-			{% endif %}
 			<span class="coin-marketcap ls-small marketcap"
-				>${{ coin.market_cap }}M</span
+				>{{ coin.market_cap }}</span
 			>
 		</div>
 		{% endfor %}
