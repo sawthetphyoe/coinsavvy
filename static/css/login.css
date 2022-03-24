@@ -1,0 +1,96 @@
+:root {
+	--yellow: #f1d00a;
+	--yellow__shade1: #d9bb09;
+	--yellow__shade2: #c1a608;
+	--yellow__shade3: #a99207;
+	--yellow__shade4: #917d06;
+	--yellow__shade5: #796805;
+	--yellow__shade6: #605304;
+	--yellow__shade7: #483e03;
+	--yellow__shade8: #302a02;
+	--yellow__shade9: #181501;
+	--yellow__tint1: #f2d523;
+	--yellow__tint2: #f4d93b;
+	--yellow__tint3: #f5de54;
+	--yellow__tint4: #f7e36c;
+	--yellow__tint5: #f8e885;
+	--yellow__tint6: #f9ec9d;
+	--yellow__tint7: #fbf1b6;
+	--yellow__tint8: #fcf6ce;
+	--yellow__tint9: #fefae7;
+	--gray: #fafafa;
+	--gray__shade1: #f5f5f5;
+	--gray__shade2: #e5e5e5;
+	--gray__shade3: #d4d4d4;
+	--gray__shade4: #a3a3a3;
+	--gray__shade5: #737373;
+	--gray__shade6: #525252;
+	--gray__shade7: #404040;
+	--gray__shade8: #262626;
+	--gray__shade9: #171717;
+}
+
+/********** Register and Login template **********/
+.login-nav--left {
+	gap: 1.8rem;
+}
+
+.already {
+	font-size: 1.6rem;
+}
+
+.login-form {
+	padding-top: 3.6rem;
+	padding-bottom: 3.6rem;
+	gap: 3rem;
+}
+
+.login-heading {
+	color: var(--gray__shade8);
+	font-size: 3.6rem;
+	margin-bottom: 2.4rem;
+}
+
+.form-input-group {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.form-label {
+	font-size: 1.6rem;
+	color: var(--gray__shade9);
+}
+
+.form-input {
+	width: 40rem;
+	padding: 1.6rem 1.4rem;
+	font-size: 1.8rem;
+	border: 1px solid var(--gray__shade3);
+	border-radius: 6px;
+	color: var(--gray__shade7);
+}
+
+.form-input:focus {
+	outline: none;
+	box-shadow: 0 0 0.3rem 0.15rem var(--yellow__tint7);
+}
+
+#submit {
+	border: none;
+	width: 40rem;
+	padding: 1.6rem;
+	transition: all 0.3s;
+}
+
+.login-footer {
+	gap: 1.5rem;
+}
+
+.login-footer .login {
+	color: var(--yellow);
+}
+
+.login-footer .login:hover {
+	color: var(--gray__shade7);
+}

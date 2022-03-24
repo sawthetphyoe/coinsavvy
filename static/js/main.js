@@ -1,3 +1,25 @@
+////////// Variables to change later //////////
+const autoRefresh = true;
+const autoUpdateInterval = 60000;
+
+////////// Sticky Nav //////////
+const observeEl = document.querySelector(".section-showcase");
+
+const obs = new IntersectionObserver(
+	function (entries) {
+		const ent = entries[0];
+		if (!ent.isIntersecting) document.body.classList.add("sticky");
+		if (ent.isIntersecting) document.body.classList.remove("sticky");
+	},
+	{
+		root: null,
+		threshold: 0,
+		rootMargin: "-90px",
+	}
+);
+if (observeEl) obs.observe(observeEl);
+
+////////// Color Change for Value Updates ///////////
 const colorChange = () => {
 	const colorEls = document.querySelectorAll(".color");
 	colorEls.forEach(function (el) {
@@ -8,9 +30,9 @@ const colorChange = () => {
 		}
 	});
 };
-
 colorChange();
 
+////////// Ajax Function for auto refresh prices and market informations //////////
 const update = function () {
 	const data = document.querySelector("main").dataset;
 	$.ajax({
@@ -55,26 +77,9 @@ const update = function () {
 		},
 	});
 };
+if (autoRefresh) setInterval(update, autoUpdateInterval);
 
-setInterval(update, 6000);
-
-const observeEl = document.querySelector(".section-showcase");
-
-const obs = new IntersectionObserver(
-	function (entries) {
-		const ent = entries[0];
-		if (!ent.isIntersecting) document.body.classList.add("sticky");
-		if (ent.isIntersecting) document.body.classList.remove("sticky");
-	},
-	{
-		root: null,
-		threshold: 0,
-		rootMargin: "-90px",
-	}
-);
-
-if (observeEl) obs.observe(observeEl);
-
+////////// Search Feature in markets template //////////
 let searchInput = document.querySelector(".search");
 let displayCoins = document.querySelectorAll(".market-row--coin");
 searchInput?.addEventListener("input", function () {
