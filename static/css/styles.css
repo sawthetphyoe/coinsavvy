@@ -286,8 +286,20 @@ body {
 	color: var(--gray__shade6);
 }
 
-.coin-marketcap {
+.coin-market-cap {
 	text-align: right;
+}
+
+.more-market:link,
+.more-market:visited {
+	color: var(--gray__shade5);
+	font-size: 1.4rem;
+	margin-top: 1rem;
+	text-decoration: underline;
+}
+
+.more-market:hover {
+	text-decoration: none;
 }
 
 /********** Features **********/
@@ -513,7 +525,7 @@ body {
 }
 
 .market-container--coins {
-	height: 105rem;
+	height: 70rem;
 	overflow-y: scroll;
 }
 
@@ -533,7 +545,7 @@ body {
 	border-radius: 0;
 }
 
-.market-container .coin-change {
+.market-container .coin-price-change-24h {
 	text-align: right;
 }
 

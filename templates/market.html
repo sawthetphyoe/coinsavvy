@@ -6,13 +6,13 @@ left_nav %}
 </div>
 {% endblock %} {% block main %}
 <main data-template="market">
-	<div class="market-container market-container--head observe">
+	<div class="market-container market-container--head">
 		<div class="market-heading">
 			<h3>Cryptocurrencies</h3>
 			<input
 				type="search"
 				name="search"
-				id="search"
+				class="search"
 				autocomplete="off"
 				placeholder="&#xF002; Search Coin Name"
 				style="font-family: Arial, FontAwesome; line-height: 20px"
@@ -21,15 +21,16 @@ left_nav %}
 		<div class="market-row market-row--head">
 			<span>Name</span>
 			<span>Price</span>
-			<span class="coin-change">24h Change</span>
-			<span class="coin-marketcap">Market Cap</span>
+			<span class="coin-price-change-24h">24h Change</span>
+			<span class="coin-market-cap">Market Cap</span>
 		</div>
 	</div>
 	<div class="market-container market-container--coins">
 		{% for coin in coins %}
-		<div
-			class="market-row market-row--coin items {{ coin.symbol }}"
-			id="market-row--coin"
+		<a
+			href="/trade/{{ coin.coin_id }}"
+			class="market-row market-row--coin {{ coin.symbol }}"
+			data-name="{{ coin.name }}"
 		>
 			<div class="coin-info">
 				<img
@@ -37,17 +38,15 @@ left_nav %}
 					alt="{{ coin.name }} logo"
 					class="coin-logo"
 				/>
-				<span class="coin-name name">{{ coin.name }}</span>
-				<span class="coin-symbol symbol">{{ coin.symbol }}</span>
+				<span class="coin-name">{{ coin.name }}</span>
+				<span class="coin-symbol">{{ coin.symbol }}</span>
 			</div>
-			<span class="coin-price ls-small price">{{ coin.price }}</span>
-			<span class="coin-change ls-small change"
+			<span class="coin-price ls-small">{{ coin.price }}</span>
+			<span class="coin-price-change-24h ls-small color"
 				>{{ coin.price_change_24h }}</span
 			>
-			<span class="coin-marketcap ls-small marketcap"
-				>{{ coin.market_cap }}</span
-			>
-		</div>
+			<span class="coin-market-cap ls-small">{{ coin.market_cap }}</span>
+		</a>
 		{% endfor %}
 	</div>
 	<div class="market-container fill"></div>

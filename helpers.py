@@ -1,4 +1,5 @@
 import os
+from threading import get_ident
 import requests
 import urllib.parse
 
@@ -12,20 +13,22 @@ import json
 def usd(value, digit=2):
     if value == None: return "--"
     value = float(value)
-    if value < 0.01: 
+    if (value > 1 and value < 2) or value < 1:
         digit = 4
-    elif value < 0.0001: 
+    if value < 0.0001:
         digit = 6
     return f"${value:,.{digit}f}"
 
 def million(value):
     if value == None: return "--"
-    return f"${round(float(value)/1000000):,.0f}M"
+    value = float(value)
+    if value > 1000000000000:
+        return f"${round(value/1000000000):,.0f}B"
+    return f"${round(value/1000000):,.0f}M"
 
 def percent(value):
     if value == None: return "--"
     return f"{float(value):+.2f}%"
-
 
 def look(coins):
     # Contact API
@@ -45,6 +48,7 @@ def look(coins):
         result = []
         for coin in data:
             text = {
+                "coin_id" : coin["id"],
                 "symbol": coin["symbol"].upper(),
                 "name": coin["name"],
                 "image" : coin["image"],
@@ -62,5 +66,3 @@ def look(coins):
         return result
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         return e
-
-

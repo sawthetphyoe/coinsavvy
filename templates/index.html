@@ -16,7 +16,7 @@
 		<a href="/register" class="btn-cta ls-small">Get started</a>
 	</section>
 
-	<section class="section-showcase container observe">
+	<section class="section-showcase container">
 		<div class="showcase center-text">
 			<div class="showcase-box">
 				<span class="showcase-box--number ls-m">$10,000</span>
@@ -25,15 +25,8 @@
 				</p>
 			</div>
 
-			<!-- <div class="showcase-box">
-  <span class="showcase-box--number ls-m">0.00%</span>
-  <p class="showcase-box--content ls-small">
-    Transcation fees for all trading
-  </p>
-</div> -->
-
 			<div class="showcase-box">
-				<span class="showcase-box--number ls-m">99+</span>
+				<span class="showcase-box--number ls-m">30+</span>
 				<p class="showcase-box--content ls-small">Cryptocurrencies listed</p>
 			</div>
 
@@ -53,29 +46,31 @@
 			<span>Name</span>
 			<span>Price</span>
 			<span>24h Change</span>
-			<span class="coin-marketcap">Market Cap</span>
+			<span class="coin-market-cap">Market Cap</span>
 		</div>
 
 		{% for coin in coins %}
-		<div class="market-row market-row--coin items {{ coin.symbol }}">
+		<a
+			href="/trade/{{ coin.coin_id }}"
+			class="market-row market-row--coin {{ coin.symbol }}"
+		>
 			<div class="coin-info">
 				<img
 					src="{{ coin.image }}"
 					alt="{{ coin.name }} logo"
 					class="coin-logo"
 				/>
-				<span class="coin-name name">{{ coin.name }}</span>
-				<span class="coin-symbol symbol">{{ coin.symbol }}</span>
+				<span class="coin-name">{{ coin.name }}</span>
+				<span class="coin-symbol">{{ coin.symbol }}</span>
 			</div>
-			<span class="coin-price ls-small price">{{ coin.price }}</span>
-			<span class="coin-change ls-small change"
+			<span class="coin-price ls-small">{{ coin.price }}</span>
+			<span class="coin-price-change-24h ls-small color"
 				>{{ coin.price_change_24h }}</span
 			>
-			<span class="coin-marketcap ls-small marketcap"
-				>{{ coin.market_cap }}</span
-			>
-		</div>
+			<span class="coin-market-cap ls-small">{{ coin.market_cap }}</span>
+		</a>
 		{% endfor %}
+		<a href="/markets" class="center-text more-market">View more markets</a>
 	</div>
 
 	<section class="section-features container">

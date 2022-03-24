@@ -36,37 +36,54 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-trend_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano", "solana"]
+# Trend coins 
+trend_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano"]
 
+# ALl coins 
+all_coins = []
+rows = db.execute("SELECT coin_id FROM cryptos")
+for row in rows:
+    all_coins.append(row["coin_id"])
+
+
+# Home page route 
 @app.route("/")
 def index():
     coins = look(trend_coins)
     return render_template("index.html", coins=coins, footer=True)
 
+
+# Market page route 
 @app.route("/markets", methods=["POST", "GET"])
 def market():
     if request.method == "GET":
-        coins = look(None)
+        coins = look(all_coins)
         return render_template("market.html", coins=coins, footer=True)
 
+
+# Log in page route 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
 
+
+# Register page route 
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
 
-@app.route("/trade", methods=["POST", "GET"])
-def trade():
-    return render_template("trade.html", footer=True)
 
-# pk_7c3455bc0bf6443e9a6a923ed8e0699b
+# Trade pages route 
+@app.route("/trade/<coin_id>", methods=["POST", "GET"])
+def trade(coin_id):
+    coins = look(trend_coins)
+    main_coin = look([coin_id])[0]
+    main_coin["chart_exchange"] = db.execute("SELECT chart_exchange FROM cryptos WHERE coin_id = ?", coin_id)[0]["chart_exchange"]
+    return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True)
 
-
-
+# Update route 
 @app.route("/update", methods=["POST", "GET"])
 def update():
     if request.method == "POST":
@@ -74,5 +91,7 @@ def update():
         if data["template"] == "index":
             rows = look(trend_coins)
         elif data["template"] == "market":
-            rows = look(None)
+            rows = look(all_coins)
+        elif data["template"] == "trade":
+            rows = look([data["mainCoin"]])
         return jsonify(rows)

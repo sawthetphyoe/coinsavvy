@@ -1,14 +1,14 @@
 {% extends "layout.html" %} {% block css %}
 <link rel="stylesheet" href="../static/css/trade.css" />
-{% endblock %} {% block title %} Bitcoin(BTC) Price Chart {% endblock %} {%
-block left_nav %}
+{% endblock %} {% block title %} {{ main_coin.name }}({{ main_coin.symbol }})
+Price Chart {% endblock %} {% block left_nav %}
 <div class="main-nav--left centeriod">
 	<a href="/login" class="login">Log in</a>
 	<a href="/register" class="btn-cta ls-small">Register</a>
 </div>
 {% endblock %} {% block main %}
 
-<main data-template="trade">
+<main data-template="trade" data-main-coin="{{ main_coin.coin_id }}">
 	<section class="section-trading">
 		<article class="trade-article">
 			<div class="chart-container centeriod">
@@ -17,7 +17,7 @@ block left_nav %}
 					<div id="tradingview_539ce"></div>
 					<div class="tradingview-widget-copyright">
 						<a
-							href="https://www.tradingview.com/symbols/BTCUSD/?exchange=BINANCE"
+							href="https://www.tradingview.com/symbols/{{ main_coin.symbol }}USD/?exchange={{ main_coin.chart_exchange }}"
 							rel="noopener"
 							target="_blank"
 						>
@@ -29,7 +29,9 @@ block left_nav %}
 					></script>
 					<script type="text/javascript">
 						new TradingView.MediumWidget({
-							symbols: [["BINANCE:BTCUSD|1D"]],
+							symbols: [
+								["{{ main_coin.chart_exchange }}:{{ main_coin.symbol }}USD|1D"],
+							],
 							chartOnly: false,
 							width: "750",
 							height: "468",
@@ -59,7 +61,9 @@ block left_nav %}
 
 			<div class="info-container">
 				<div class="info-box info-box--price">
-					<h3 class="info-box--head">BTC Price Information</h3>
+					<h3 class="info-box--head">
+						{{ main_coin.symbol }} Price Information
+					</h3>
 					<div class="info-box--content">
 						<div class="info-row row-head">
 							<span>All Time High</span>
@@ -69,16 +73,18 @@ block left_nav %}
 						</div>
 
 						<div class="info-row row-body">
-							<span>$ 68,789.00</span>
-							<span>-0.05%</span>
-							<span>+0,11%</span>
-							<span>-0.91%</span>
+							<span class="coin-ath">{{ main_coin.ath}}</span>
+							<span class="coin-price-change-1h color">{{ main_coin.price_change_1h}}</span>
+							<span class="coin-price-change-24h color">{{ main_coin.price_change_24h}}</span>
+							<span class="coin-price-change-7d color">{{ main_coin.price_change_7d}}</span>
 						</div>
 					</div>
 				</div>
 
 				<div class="info-box info-box--market">
-					<h3 class="info-box--head">BTC Market Information</h3>
+					<h3 class="info-box--head">
+						{{ main_coin.symbol }} Market Information
+					</h3>
 					<div class="info-box--content">
 						<div class="info-row row-head">
 							<span>Market Cap Rank</span>
@@ -88,10 +94,10 @@ block left_nav %}
 						</div>
 
 						<div class="info-row row-body">
-							<span>#1</span>
-							<span>+0.34%</span>
-							<span>$ 743.57B</span>
-							<span>$ 18.9M</span>
+							<span class="coin-market-rank">#{{ main_coin.market_rank }}</span>
+							<span class="coin-market-change-24h color">{{ main_coin.market_change_24h }}</span>
+							<span class="coin-market-cap-trade">{{ main_coin.market_cap }}</span>
+							<span class="coin-circulation-supply">{{ main_coin.circulation_supply }}</span>
 						</div>
 					</div>
 				</div>
@@ -134,17 +140,19 @@ block left_nav %}
 								name="recieve-buy"
 								class="input-amount"
 							/>
-							<div class="trade-unit">BTC</div>
+							<div class="trade-unit">{{ main_coin.symbol }}</div>
 						</div>
 					</div>
-					<button class="btn-cta--buy btn-cta ls-small">Buy Bitcoin</button>
+					<button class="btn-cta--buy btn-cta ls-small">
+						Buy {{ main_coin.name }}
+					</button>
 				</div>
 
 				<div class="trade-body trade-body--sell">
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-sell" class="trade-label">Spend</label>
-							<span class="max">Max : 0 BTC</span>
+							<span class="max">Max : 0 {{ main_coin.symbol }}</span>
 						</div>
 						<div class="trade-input-inside-group">
 							<input
@@ -154,7 +162,7 @@ block left_nav %}
 								name="spend-sell"
 								class="input-amount"
 							/>
-							<div class="trade-unit">BTC</div>
+							<div class="trade-unit">{{ main_coin.symbol }}</div>
 						</div>
 					</div>
 
@@ -173,73 +181,28 @@ block left_nav %}
 							<div class="trade-unit">USD</div>
 						</div>
 					</div>
-					<button class="btn-cta--buy btn-cta ls-small">Sell Bitcoin</button>
+					<button class="btn-cta--buy btn-cta ls-small">
+						Sell {{ main_coin.name }}
+					</button>
 				</div>
 			</div>
 
 			<div class="trend-container">
 				<h3 class="trend-heading">Trending cryptos</h3>
 
-				<div class="trend-coin">
+				{% for coin in coins %}
+				<a href="/trade/{{ coin.coin_id }}" class="trend-coin">
 					<div class="centeriod">
 						<img
-							src="https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1644979850"
-							alt="BNB logo"
+							src="{{ coin.image }}"
+							alt="{{ coin.name }} logo"
 							class="coin-logo"
 						/>
-						<span class="coin-name coin-name--trend">BNB</span>
+						<span class="coin-name coin-name--trend">{{ coin.name }}</span>
 					</div>
-					<span class="coin-price coin-price--trend">$371.64</span>
-				</div>
-
-				<div class="trend-coin">
-					<div class="centeriod">
-						<img
-							src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"
-							alt="Ethereum logo"
-							class="coin-logo"
-						/>
-						<span class="coin-name coin-name--trend">Ethereum</span>
-					</div>
-					<span class="coin-price coin-price--trend">$2,583.74</span>
-				</div>
-
-				<div class="trend-coin">
-					<div class="centeriod">
-						<img
-							src="https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
-							alt="XRP logo"
-							class="coin-logo"
-						/>
-						<span class="coin-name coin-name--trend">XRP</span>
-					</div>
-					<span class="coin-price coin-price--trend">$0.7986</span>
-				</div>
-
-				<div class="trend-coin">
-					<div class="centeriod">
-						<img
-							src="https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422"
-							alt="Solana logo"
-							class="coin-logo"
-						/>
-						<span class="coin-name coin-name--trend">Solana</span>
-					</div>
-					<span class="coin-price coin-price--trend">$81.24</span>
-				</div>
-
-				<div class="trend-coin">
-					<div class="centeriod">
-						<img
-							src="https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860"
-							alt="Cardano logo"
-							class="coin-logo"
-						/>
-						<span class="coin-name coin-name--trend">Cardano</span>
-					</div>
-					<span class="coin-price coin-price--trend">$0.793002</span>
-				</div>
-			</div>
+					<span class="coin-price coin-price--trend">{{ coin.price }}</span>
+				</a>
+                {% endfor %}
 		</aside>
 	</section>
 
@@ -249,4 +212,6 @@ block left_nav %}
 	</section>
 </main>
 
+{% endblock %} {% block script %}
+<script src="../static/js/main.js"></script>
 {% endblock %}
