@@ -1,6 +1,6 @@
 ////////// Variables to change later //////////
-const autoRefresh = true;
-const autoUpdateInterval = 60000;
+const autoRefresh = false;
+const autoUpdateInterval = 6000;
 
 ////////// Sticky Nav //////////
 const observeEl = document.querySelector(".section-showcase");
@@ -91,4 +91,37 @@ searchInput?.addEventListener("input", function () {
 			el.style.display = "grid";
 		}
 	});
+});
+
+////////// Buy/sell Features in trade template //////////
+const tradeBtns = document.querySelectorAll(".trade-btn");
+const buyBtn = document.querySelector(".buy-btn");
+const sellBtn = document.querySelector(".sell-btn");
+
+const tradeBodies = document.querySelectorAll(".trade-body");
+const buyBody = document.querySelector(".trade-body--buy");
+const sellBody = document.querySelector(".trade-body--sell");
+
+buyBtn.addEventListener("click", function () {
+	tradeBtns.forEach(function (el) {
+		el.classList.remove("trade-btn--active");
+	});
+	this.classList.add("trade-btn--active");
+
+	tradeBodies.forEach(function (e) {
+		e.classList.remove("trade-body--active");
+	});
+	buyBody.classList.add("trade-body--active");
+});
+
+sellBtn.addEventListener("click", function () {
+	tradeBtns.forEach(function (el) {
+		el.classList.remove("trade-btn--active");
+	});
+	this.classList.add("trade-btn--active");
+
+	tradeBodies.forEach(function (e) {
+		e.classList.remove("trade-body--active");
+	});
+	sellBody.classList.add("trade-body--active");
 });

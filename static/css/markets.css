@@ -63,10 +63,10 @@
 	color: var(--gray__shade4);
 }
 
-.market-heading input:focus,
-.market-heading input:hover {
+.market-heading input:hover,
+.market-heading input:focus {
 	outline: none;
-	box-shadow: 0 0 0.3rem 0.15rem var(--yellow__tint7);
+	box-shadow: 0 0 0.2rem 0.2rem var(--yellow__tint7);
 }
 
 .market-container--head {

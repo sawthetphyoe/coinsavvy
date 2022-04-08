@@ -87,10 +87,10 @@
 	gap: 1.5rem;
 }
 
-.login-footer .login {
+.login-footer .log {
 	color: var(--yellow);
 }
 
-.login-footer .login:hover {
+.login-footer .log:hover {
 	color: var(--gray__shade7);
 }

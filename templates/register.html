@@ -9,7 +9,7 @@
 {% endblock %} {% block main %}
 
 <main data-template="register">
-	<form action="" class="login-form container">
+	<form action="/register" method="post" class="login-form container">
 		<h3 class="login-heading center-text">Create your account</h3>
 		<div class="form-input-group">
 			<label for="username" class="form-label">Username</label>
@@ -49,7 +49,7 @@
 	</form>
 	<div class="main-nav--left login-footer centeriod">
 		<span class="already">Already have an account?</span>
-		<a href="/login" class="login">Log in</a>
+		<a href="/login" class="log">Log in</a>
 	</div>
 </main>
 {% endblock %}

@@ -1,7 +1,5 @@
-from cgitb import lookup
-from crypt import methods
+from email import message
 import os
-from unittest import result
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -36,8 +34,14 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-# Trend coins 
-trend_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano"]
+# Trend coins for home page 
+home_coins = ["bitcoin", "ethereum", "binancecoin", "tether", "terra-luna", "cardano", "solona", "shiba-inu"]
+
+# Trend coins for trade page 
+trade_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano"]
+
+
+
 
 # ALl coins 
 all_coins = []
@@ -49,36 +53,119 @@ for row in rows:
 # Home page route 
 @app.route("/")
 def index():
-    coins = look(trend_coins)
-    return render_template("index.html", coins=coins, footer=True)
-
+    coins = look(home_coins)
+    if session:
+        user_id = session["user_id"]
+        user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+        user_name = user[0]["username"]
+        return render_template("index.html", coins=coins, footer=True, user_name=user_name)
+    else:
+        return render_template("index.html", coins=coins, footer=True)
 
 # Market page route 
 @app.route("/markets", methods=["POST", "GET"])
-def market():
+def markets():
     if request.method == "GET":
         coins = look(all_coins)
-        return render_template("market.html", coins=coins, footer=True)
+        return render_template("markets.html", coins=coins, footer=True)
 
 
 # Log in page route 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == "GET":
+    """Log user in"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return render_template("apology.html", message="must provide username")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("apology.html", message="must provide password")
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            return render_template("apology.html", message="invalid username and/or password")
+
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
         return render_template("login.html")
+
+
+# Log out route
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
 
 
 # Register page route 
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    if request.method == "GET":
+    session.clear()
+    if request.method == "POST":
+
+        user = request.form.get("username")
+        password = request.form.get("password")
+        confirm = request.form.get("confirm")
+        # Ensure username was submmited
+        if not user:
+            return render_template("apology.html", message="Choose a username!")
+
+        # Ensure password was submmited
+        if not password:
+            return render_template("apology.html", message="Create a password!")
+
+        # Ensure password confirmation was submmited
+        if not confirm:
+            return render_template("apology.html", message="Confirm your password!")
+
+        if not password == confirm:
+            return render_template("apology.html", message="Passwords do not match")
+
+        # Ensure username is not already exist in database
+        user_exist = db.execute("SELECT * FROM users WHERE username = ?", user)
+        if user_exist:
+            return render_template("apology.html", message="This username is already taken by someone else!")
+
+        # Insert new user into database
+        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", user, generate_password_hash(password))
+
+        # Get new user from database
+        new_user = db.execute("SELECT * FROM users WHERE username = ?", user)
+
+        # Remember which user has logged in
+        session["user_id"] = new_user[0]["id"]
+
+        return redirect("/")
+    else:
         return render_template("register.html")
 
 
 # Trade pages route 
 @app.route("/trade/<coin_id>", methods=["POST", "GET"])
 def trade(coin_id):
-    coins = look(trend_coins)
+    coins = look(trade_coins)
     main_coin = look([coin_id])[0]
     main_coin["chart_exchange"] = db.execute("SELECT chart_exchange FROM cryptos WHERE coin_id = ?", coin_id)[0]["chart_exchange"]
     return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True)
@@ -89,9 +176,15 @@ def update():
     if request.method == "POST":
         data = request.get_json()
         if data["template"] == "index":
-            rows = look(trend_coins)
+            rows = look(home_coins)
         elif data["template"] == "market":
             rows = look(all_coins)
         elif data["template"] == "trade":
             rows = look([data["mainCoin"]])
         return jsonify(rows)
+
+# Apology route 
+@app.route("/apology")
+def apology():
+    message = "Username is not valid"
+    return render_template("apology.html", message=message)

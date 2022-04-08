@@ -1,8 +1,76 @@
 {% extends "layout.html" %} {% block title %} Buy & Sell Bitcoin and Altercoins
 | Cryptocurrency Exchange {% endblock %} {% block left_nav %}
 <div class="main-nav--left centeriod">
-	<a href="/login" class="login">Log in</a>
+	{% if session["user_id"] %}
+	<div class="account">
+		<button class="user-account">
+			<img
+				src="../static/images/icons/user.svg"
+				alt="user icon"
+				class="account-icon account-icon--user"
+			/>
+			{{ user_name }}
+			<img
+				src="../static/images/icons/sort-down.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortdown"
+			/>
+
+			<img
+				src="../static/images/icons/sort-up.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortup"
+			/>
+		</button>
+
+		<ul class="account-setting">
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Profile</a
+				>
+			</li>
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Overview</a
+				>
+			</li>
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					History</a
+				>
+			</li>
+			<li>
+				<a href="/logout" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Log out</a
+				>
+			</li>
+		</ul>
+	</div>
+	<!-- <a href="/logout" class="log">Log out</a> -->
+	{% else %}
+	<a href="/login" class="log">Log in</a>
 	<a href="/register" class="btn-cta ls-small">Register</a>
+	{% endif %}
 </div>
 {% endblock %} {% block main %}
 <main data-template="index">
@@ -10,7 +78,7 @@
 		<h1 class="intro-heading center-text">Enjoy the crypto world at no cost</h1>
 		<p class="intro-content ls-small center-text">
 			CoinSavvy is the easiest place to simulate your crypto portfolio.<br />
-			Join CoinSavvy now and get $10,000 deposit for FREE!
+			Join CoinSavvy now with just a few clicks.
 		</p>
 
 		<a href="/register" class="btn-cta ls-small">Get started</a>
@@ -21,7 +89,7 @@
 			<div class="showcase-box">
 				<span class="showcase-box--number ls-m">$10,000</span>
 				<p class="showcase-box--content ls-small">
-					Free deposit in yout wallet once registered
+					Fake money in your wallet once registered
 				</p>
 			</div>
 
@@ -31,11 +99,23 @@
 			</div>
 
 			<div class="showcase-box">
+				<span class="showcase-box--number ls-m">99+</span>
+				<p class="showcase-box--content ls-small">Active users everyday</p>
+			</div>
+
+			<div class="showcase-box">
+				<span class="showcase-box--number ls-m">0.05%</span>
+				<p class="showcase-box--content ls-small">
+					Lowest transition fees for every trade
+				</p>
+			</div>
+
+			<!-- <div class="showcase-box">
 				<span class="showcase-box--number ls-m">24/7</span>
 				<p class="showcase-box--content ls-small">
 					Access on cryptocurrencies trading
 				</p>
-			</div>
+			</div> -->
 		</div>
 	</section>
 
@@ -77,8 +157,7 @@
 		<h2 class="section-heading">Quick features</h2>
 		<div class="section-desc ls-small">
 			<p>
-				A powerful Bitcoin and cryptocurrency exchange with innovative features
-				in your pocket.
+				A powerful crypto simulator with innovative features in your pocket.
 			</p>
 		</div>
 
@@ -107,23 +186,25 @@
 
 			<div class="feature-box">
 				<img
-					src="../static/images/icons/smile.svg"
+					src="../static/images/icons/user-ninja.svg"
 					alt="bolt icon svg"
 					class="feature-icon"
 				/>
-				<h3 class="feature-title ls-small">Simple UI</h3>
-				<p class="feature-content">User friendly and easy to use interface</p>
+				<h3 class="feature-title ls-small">Anonymous</h3>
+				<p class="feature-content">
+					We wouldn't ask any of your personal information
+				</p>
 			</div>
 
 			<div class="feature-box">
 				<img
-					src="../static/images/icons/shield-check.svg"
+					src="../static/images/icons/question.svg"
 					alt="bolt icon svg"
 					class="feature-icon"
 				/>
-				<h3 class="feature-title ls-small">Privacy</h3>
+				<h3 class="feature-title ls-small">24/7 Support</h3>
 				<p class="feature-content">
-					We wouldn't ask any of your personal information
+					Our support team is available 24 hours a day
 				</p>
 			</div>
 		</div>

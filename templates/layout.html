@@ -47,14 +47,17 @@
 						<span id="logo-name">COINSAVVY</span>
 					</a>
 					<div class="right-links centeriod">
-						<a href="#"
+						<!-- <a href="#"
 							>Products
 							<img
 								src="../static/images/icons/sort-down.svg"
 								alt="sort icon"
 								class="sort-down"
-						/></a>
+						/></a> -->
 						<a href="/markets">Markets</a>
+						{% if session["user_id"] %}
+						<a href="/wallet">Wallet</a>
+						{% endif %}
 						<!-- <a href="#">About</a> -->
 					</div>
 				</div>
@@ -125,12 +128,11 @@
 				<div class="footer-box">
 					<h3 class="footer-box--title">Learn</h3>
 					<ul class="footer-box--links">
-						<li><a href="#">Prices</a></li>
-						<li><a href="#">Buy Bitcoin</a></li>
-						<li><a href="#">Buy Ethereum</a></li>
-						<li><a href="#">Buy Bitcoin Cash</a></li>
-						<li><a href="#">Buy Litecoin</a></li>
-						<li><a href="#">Buy SHIB</a></li>
+						<li><a href="/trade/bitcoin">Buy Bitcoin</a></li>
+						<li><a href="/trade/ethereum">Buy Ethereum</a></li>
+						<li><a href="/trade/bitcoin-cash">Buy Bitcoin Cash</a></li>
+						<li><a href="/trade/litecoin">Buy Litecoin</a></li>
+						<li><a href="/trade/shiba-inu">Buy SHIB</a></li>
 					</ul>
 				</div>
 

@@ -1,14 +1,13 @@
 {% extends "layout.html" %} {% block css %}
 <link rel="stylesheet" href="../static/css/login.css" />
-{% endblock %} {% block title %} Log in {% endblock %} {% block
-left_nav %}
+{% endblock %} {% block title %} Log in {% endblock %} {% block left_nav %}
 <div class="main-nav--left login-nav--left centeriod">
 	<span class="already">Don't have an account?</span>
 	<a href="/register" class="btn-cta ls-small">Register</a>
 </div>
 {% endblock %} {% block main %}
 <main data-template="login">
-	<form action="" class="login-form container">
+	<form action="/login" method="post" class="login-form container">
 		<h3 class="login-heading center-text">Log in to CoinSavvy</h3>
 		<div class="form-input-group">
 			<label for="username" class="form-label">Username</label>
@@ -38,7 +37,7 @@ left_nav %}
 	</form>
 	<div class="main-nav--left login-footer centeriod">
 		<span class="already">Don't have an account?</span>
-		<a href="/register" class="login">Register</a>
+		<a href="/register" class="log">Register</a>
 	</div>
 </main>
 
