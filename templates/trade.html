@@ -114,7 +114,7 @@ Price Chart {% endblock %} {% block left_nav %}
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-buy" class="trade-label">Spend</label>
-							<span class="max">Max : 0 USD</span>
+							<span class="max">Max : {{ cash }} USD</span>
 						</div>
 						<div class="trade-input-inside-group">
 							<input
@@ -152,7 +152,7 @@ Price Chart {% endblock %} {% block left_nav %}
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-sell" class="trade-label">Spend</label>
-							<span class="max">Max : 0 {{ main_coin.symbol }}</span>
+							<span class="max">Max : {{ coin_balance }} {{ main_coin.symbol }}</span>
 						</div>
 						<div class="trade-input-inside-group">
 							<input
