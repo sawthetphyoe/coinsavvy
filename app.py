@@ -1,5 +1,6 @@
 from email import message
 import os
+from turtle import circle
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -67,7 +68,13 @@ def index():
 def markets():
     if request.method == "GET":
         coins = look(all_coins)
-        return render_template("markets.html", coins=coins, footer=True)
+        if session:
+            user_id = session["user_id"]
+            user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+            user_name = user[0]["username"]
+            return render_template("markets.html", coins=coins, footer=True, user_name=user_name)
+        else:
+            return render_template("markets.html", coins=coins, footer=True)
 
 
 # Log in page route 
@@ -168,7 +175,15 @@ def trade(coin_id):
     coins = look(trade_coins)
     main_coin = look([coin_id])[0]
     main_coin["chart_exchange"] = db.execute("SELECT chart_exchange FROM cryptos WHERE coin_id = ?", coin_id)[0]["chart_exchange"]
-    return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True)
+    if session:
+        user_id = session["user_id"]
+        user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+        cash = user[0]["cash"]
+        coin_balance = db.execute("SELECT amount FROM balances WHERE user_id = ? and coin_id = ?", user_id, coin_id)
+        return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True, cash=cash, coin_balance=coin_balance)
+    else:
+        return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True)
+
 
 # Update route 
 @app.route("/update", methods=["POST", "GET"])
@@ -188,3 +203,14 @@ def update():
 def apology():
     message = "Username is not valid"
     return render_template("apology.html", message=message)
+
+
+# Wallet page route 
+@app.route("/wallet", methods=["POST", "GET"])
+def wallet():
+    if session:
+        user_id = session["user_id"]
+        user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+        user_name = user[0]["username"]
+        return render_template("wallet.html", footer=False, user_name=user_name)
+

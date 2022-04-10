@@ -35,23 +35,13 @@
 				>
 			</li>
 			<li>
-				<a href="#" class="account-setting--link"
+				<a href="/wallet" class="account-setting--link"
 					><img
 						src="../static/images/icons/caret-right.svg"
 						alt="caret right icon"
 						class="caret-icon"
 					/>
-					Overview</a
-				>
-			</li>
-			<li>
-				<a href="#" class="account-setting--link"
-					><img
-						src="../static/images/icons/caret-right.svg"
-						alt="caret right icon"
-						class="caret-icon"
-					/>
-					History</a
+					Wallet</a
 				>
 			</li>
 			<li>
@@ -66,7 +56,6 @@
 			</li>
 		</ul>
 	</div>
-	<!-- <a href="/logout" class="log">Log out</a> -->
 	{% else %}
 	<a href="/login" class="log">Log in</a>
 	<a href="/register" class="btn-cta ls-small">Register</a>
@@ -76,12 +65,19 @@
 <main data-template="index">
 	<section class="section-intro container">
 		<h1 class="intro-heading center-text">Enjoy the crypto world at no cost</h1>
+		{% if session["user_id"] %}
+		<p class="intro-content ls-small center-text">
+			CoinSavvy is the easiest place to simulate your crypto portfolio.<br />
+			Start your crypto journey right away.
+		</p>
+		<a href="/trade/bitcoin" class="btn-cta ls-small">Buy BTC</a>
+		{% else %}
 		<p class="intro-content ls-small center-text">
 			CoinSavvy is the easiest place to simulate your crypto portfolio.<br />
 			Join CoinSavvy now with just a few clicks.
 		</p>
-
 		<a href="/register" class="btn-cta ls-small">Get started</a>
+		{% endif %}
 	</section>
 
 	<section class="section-showcase container">
@@ -104,18 +100,11 @@
 			</div>
 
 			<div class="showcase-box">
-				<span class="showcase-box--number ls-m">0.05%</span>
+				<span class="showcase-box--number ls-m">0.25%</span>
 				<p class="showcase-box--content ls-small">
 					Lowest transition fees for every trade
 				</p>
 			</div>
-
-			<!-- <div class="showcase-box">
-				<span class="showcase-box--number ls-m">24/7</span>
-				<p class="showcase-box--content ls-small">
-					Access on cryptocurrencies trading
-				</p>
-			</div> -->
 		</div>
 	</section>
 
@@ -211,8 +200,13 @@
 	</section>
 
 	<section class="section-prefooter">
+		{% if session["user_id"] %}
+		<h2>Buy Bitcoin Now</h2>
+		<a href="/trade/bitcoin" class="btn-cta ls-small">Buy BTC</a>
+		{% else %}
 		<h2>Start with Bitcoin Now</h2>
 		<a href="/register" class="btn-cta ls-small">Register Now</a>
+		{% endif %}
 	</section>
 </main>
 {% endblock %} {% block script %}

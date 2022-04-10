@@ -2,8 +2,65 @@
 <link rel="stylesheet" href="../static/css/markets.css" />
 {% endblock %} {% block title %} Markets {% endblock %} {% block left_nav %}
 <div class="main-nav--left centeriod">
+	{% if session["user_id"] %}
+	<div class="account">
+		<button class="user-account">
+			<img
+				src="../static/images/icons/user.svg"
+				alt="user icon"
+				class="account-icon account-icon--user"
+			/>
+			{{ user_name }}
+			<img
+				src="../static/images/icons/sort-down.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortdown"
+			/>
+
+			<img
+				src="../static/images/icons/sort-up.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortup"
+			/>
+		</button>
+
+		<ul class="account-setting">
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Profile</a
+				>
+			</li>
+			<li>
+				<a href="/wallet" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Wallet</a
+				>
+			</li>
+			<li>
+				<a href="/logout" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Log out</a
+				>
+			</li>
+		</ul>
+	</div>
+	{% else %}
 	<a href="/login" class="log">Log in</a>
 	<a href="/register" class="btn-cta ls-small">Register</a>
+	{% endif %}
 </div>
 {% endblock %} {% block main %}
 <main data-template="market">
