@@ -1,0 +1,172 @@
+{% extends "layout.html" %} {% block css %}
+<link rel="stylesheet" href="../static/css/wallet.css" />
+{% endblock %} {% block title %} Log in {% endblock %} {% block left_nav %}
+<div class="main-nav--left centeriod">
+	<div class="account">
+		<button class="user-account">
+			<img
+				src="../static/images/icons/user.svg"
+				alt="user icon"
+				class="account-icon account-icon--user"
+			/>
+			{{ user_name }}
+			<img
+				src="../static/images/icons/sort-down.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortdown"
+			/>
+
+			<img
+				src="../static/images/icons/sort-up.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortup"
+			/>
+		</button>
+
+		<ul class="account-setting">
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Profile</a
+				>
+			</li>
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Overview</a
+				>
+			</li>
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					History</a
+				>
+			</li>
+			<li>
+				<a href="/logout" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Log out</a
+				>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endblock %} {% block main %}
+<main>
+	<div class="wallet-container">
+		<div class="capital-container">
+			<h3 class="wallet-subhead">Overview</h3>
+			<div class="capital">
+				<img
+					src="../static/images/icons/wallet.svg"
+					alt="wallet-icon"
+					class="wallet-icon"
+				/>
+				<span class="total-heading capital-subhead">Total Capital</span>
+				<span class="pnl-heading capital-subhead">Total PNL</span>
+				<span class="total-amount">$10,000</span>
+				<span class="pnl-percent pnl-content">-0.00%</span>
+			</div>
+		</div>
+
+		<div class="asset-container">
+			<h3 class="wallet-subhead">Asset Allocation</h3>
+			<div class="asset">
+				<canvas class="myCanvas" id="myCanvas"></canvas>
+				<div class="label-box">
+					<div class="label">
+						<span class="label-color"></span>
+						<span class="label-coin">USD Coin</span>
+						<span class="label-percent">54%</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="portfolio-container list-container">
+		<h3 class="wallet-subhead">Portfolio</h3>
+		<div class="portfolio table">
+			<div class="table-row table-row--head table-row--portfolio">
+				<span class="portfolio-coinname">Coin</span>
+				<span class="portfolio-amount">Amount</span>
+				<span class="portfolio-value">Value</span>
+				<span class="portfolio-pnlvalue t-right">PNL</span>
+				<span class="portfolio-pnlpercent t-right">PNL % </span>
+				<span class="portfolio-btn--box t-right trans">foo</span>
+			</div>
+
+			<div class="scroll-data">
+				<div class="table-row table-row--portfolio table-row--body">
+					<div class="portfolio-coin">
+						<img
+							src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+							alt="bitcoin logo"
+							class="portfolio-coin--logo"
+						/>
+						<span class="portfolio-coin--name">BTC</span>
+					</div>
+
+					<span class="portfolio-amount">0.00034</span>
+					<span class="portfolio-value">$5,342</span>
+					<span class="portfolio-pnlvalue t-right">$187</span>
+					<span class="portfolio-pnlpercent t-right">+3.4%</span>
+					<div class="portfolio-btn--box t-right">
+						<button class="portfolio-btn">Trade</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="history-container list-container">
+		<h3 class="wallet-subhead">History</h3>
+		<div class="history table">
+			<div class="table-row table-row--history table-row--head">
+				<span class="history-action">Action</span>
+				<span class="history-name">Coin</span>
+				<span class="history-amount">Amount</span>
+				<span class="history-price">Price</span>
+				<span class="history-value">Value</span>
+				<span class="history-date t-right">Date</span>
+			</div>
+
+			<div class="scroll-data">
+				<div class="table-row table-row--history table-row--body">
+					<span class="history-action">BUY</span>
+					<div class="history-coin">
+						<img
+							src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+							alt="bitcoin logo"
+							class="history-coin--logo"
+						/>
+						<span class="history-coin--name">BTC</span>
+					</div>
+					<span class="history-amount">0.0000034</span>
+					<span class="history-price">$3,234</span>
+					<span class="history-value">$278</span>
+					<span class="history-date t-right">5 hours ago</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock %} {% block script %}
+<script src="../static/js/chart.js"></script>
+{% endblock %}
