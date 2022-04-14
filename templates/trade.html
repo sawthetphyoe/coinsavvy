@@ -3,7 +3,7 @@
 {% endblock %} {% block title %} {{ main_coin.name }}({{ main_coin.symbol }})
 Price Chart {% endblock %} {% block left_nav %}
 <div class="main-nav--left centeriod">
-    {% if session["user_id"] %}
+	{% if session["user_id"] %}
 	<div class="account">
 		<button class="user-account">
 			<img
@@ -65,7 +65,12 @@ Price Chart {% endblock %} {% block left_nav %}
 </div>
 {% endblock %} {% block main %}
 
-<main data-template="trade" data-main-coin="{{ main_coin.coin_id }}" data-cash="{{ cash }}" data-bal="{{ coin_balance }}">
+<main
+	data-template="trade"
+	data-main-coin="{{ main_coin.coin_id }}"
+	data-cash="{{ cash }}"
+	data-bal="{{ coin_balance }}"
+>
 	<section class="section-trading">
 		<article class="trade-article">
 			<div class="chart-container centeriod">
@@ -131,9 +136,15 @@ Price Chart {% endblock %} {% block left_nav %}
 
 						<div class="info-row row-body">
 							<span class="coin-ath">{{ main_coin.ath}}</span>
-							<span class="coin-price-change-1h color">{{ main_coin.price_change_1h}}</span>
-							<span class="coin-price-change-24h color">{{ main_coin.price_change_24h}}</span>
-							<span class="coin-price-change-7d color">{{ main_coin.price_change_7d}}</span>
+							<span class="coin-price-change-1h color"
+								>{{ main_coin.price_change_1h}}</span
+							>
+							<span class="coin-price-change-24h color"
+								>{{ main_coin.price_change_24h}}</span
+							>
+							<span class="coin-price-change-7d color"
+								>{{ main_coin.price_change_7d}}</span
+							>
 						</div>
 					</div>
 				</div>
@@ -152,9 +163,15 @@ Price Chart {% endblock %} {% block left_nav %}
 
 						<div class="info-row row-body">
 							<span class="coin-market-rank">#{{ main_coin.market_rank }}</span>
-							<span class="coin-market-change-24h color">{{ main_coin.market_change_24h }}</span>
-							<span class="coin-market-cap-trade">{{ main_coin.market_cap }}</span>
-							<span class="coin-circulation-supply">{{ main_coin.circulation_supply }}</span>
+							<span class="coin-market-change-24h color"
+								>{{ main_coin.market_change_24h }}</span
+							>
+							<span class="coin-market-cap-trade"
+								>{{ main_coin.market_cap }}</span
+							>
+							<span class="coin-circulation-supply"
+								>{{ main_coin.circulation_supply }}</span
+							>
 						</div>
 					</div>
 				</div>
@@ -168,7 +185,12 @@ Price Chart {% endblock %} {% block left_nav %}
 					<button class="sell-btn trade-btn">Sell</button>
 				</div>
 
-				<form action="/buy/{{ main_coin.coin_id }}" method="post" class="trade-body trade-body--buy trade-body--active" id="buy-form">
+				<form
+					action="/buy/{{ main_coin.coin_id }}"
+					method="post"
+					class="trade-body trade-body--buy trade-body--active"
+					id="buy-form"
+				>
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-buy" class="trade-label">Spend</label>
@@ -178,13 +200,12 @@ Price Chart {% endblock %} {% block left_nav %}
 							<input
 								type="number"
 								placeholder="20.00 - 10000.00"
-                                min="0"
-                                step="10"
+								min="0"
+								step="10"
 								id="spend-buy"
 								name="spend-buy"
 								class="input-amount"
-                                autocomplete="off"
-
+								autocomplete="off"
 							/>
 							<div class="trade-unit">USD</div>
 						</div>
@@ -198,44 +219,68 @@ Price Chart {% endblock %} {% block left_nav %}
 							<input
 								type="number"
 								placeholder="0.000001"
-                                min="0"
-                                step="0.000001"
+								min="0"
+								step="0.000001"
 								id="recieve-buy"
 								name="recieve-buy"
 								class="input-amount"
-                                autocomplete="off"
-
+								autocomplete="off"
 							/>
 							<div class="trade-unit">{{ main_coin.symbol }}</div>
 						</div>
 					</div>
 
-                    <div class="slidecontainer">
-                        <input type="range" name="range" id="slider-buy" class="slider slider-buy" min="0" max="{{ cash }}" value="0" step="1">
-                    </div>
+					<div class="slidecontainer">
+						<input
+							type="range"
+							name="range"
+							id="slider-buy"
+							class="slider slider-buy"
+							min="0"
+							max="{{ cash }}"
+							value="0"
+							step="1"
+						/>
+					</div>
 
-                    {% if session["user_id"] %}
-                    <input type="text" name="current-price" id="current-price-buy" class="input-amount hide-input">
-                    
-                    <input type="text" name="symbol" id="symbol" class="input-amount hide-input" value="{{ main_coin.symbol }}">
-                    {% endif %}
+					{% if session["user_id"] %}
+					<input
+						type="text"
+						name="current-price"
+						id="current-price-buy"
+						class="input-amount hide-input"
+					/>
+
+					<input
+						type="text"
+						name="symbol"
+						id="symbol"
+						class="input-amount hide-input"
+						value="{{ main_coin.symbol }}"
+					/>
+					{% endif %}
 
 					<div class="submit-box">
-                        {% if session["user_id"] %}
-                        <input type="submit" 
-                        name="submit" value="Buy {{ main_coin.name }}"  id="buy-btn" class="btn-cta--buy btn-cta ls-small center-text">
-                        <div class="layer layer-buy"></div>
-                        {% else %}
-                        <button class="btn-cta--buy btn-cta ls-small">
-                        <a href="/register" class="log-btn">Register</a>
-                        <span>or</span>
-                        <a href="/login" class="log-btn">Log in</a>
-                        <span>to buy</span>
-                        </button>
-                        {% endif %}
-                    </div>
+						{% if session["user_id"] %}
+						<input
+							type="submit"
+							name="submit"
+							value="Buy {{ main_coin.name }}"
+							id="buy-btn"
+							class="btn-cta--buy btn-cta ls-small center-text"
+						/>
+						<div class="layer layer-buy"></div>
+						{% else %}
+						<button class="btn-cta--buy btn-cta ls-small">
+							<a href="/register" class="log-btn">Register</a>
+							<span>or</span>
+							<a href="/login" class="log-btn">Log in</a>
+							<span>to buy</span>
+						</button>
+						{% endif %}
+					</div>
 
-                    <!-- {% if session["user_id"] %}
+					<!-- {% if session["user_id"] %}
                     <div class="expire">
                         <span class="expire-display">The price will be expire in 
                         <span class="expire-time">60</span>
@@ -246,22 +291,28 @@ Price Chart {% endblock %} {% block left_nav %}
                     {% endif %} -->
 				</form>
 
-				<form action="/markets" class="trade-body trade-body--sell" id="sell-form">
+				<form
+					action="/markets"
+					class="trade-body trade-body--sell"
+					id="sell-form"
+				>
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-sell" class="trade-label">Spend</label>
-                            {% if coin_balance %}
-							<span class="max">Max : {{ coin_balance }} {{ main_coin.symbol }}</span>
-                            {% else %}
+							{% if coin_balance %}
+							<span class="max"
+								>Max : {{ coin_balance }} {{ main_coin.symbol }}</span
+							>
+							{% else %}
 							<span class="max">Max : 0 {{ main_coin.symbol }}</span>
-                            {% endif %}
+							{% endif %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
 								type="number"
 								placeholder="0.000001"
-                                min="0"
-                                step="0.000001"
+								min="0"
+								step="0.000001"
 								id="spend-sell"
 								name="spend-sell"
 								class="input-amount"
@@ -278,8 +329,8 @@ Price Chart {% endblock %} {% block left_nav %}
 							<input
 								type="number"
 								placeholder="Minimum : 10"
-                                min="0"
-                                step="10"
+								min="0"
+								step="10"
 								id="recieve-sell"
 								name="recieve-sell"
 								class="input-amount"
@@ -288,41 +339,66 @@ Price Chart {% endblock %} {% block left_nav %}
 						</div>
 					</div>
 
-                    <div class="slidecontainer">
-                        <input type="range" name="range" id="slider-sell" class="slider slider-sell" min="0" max="{{ coin_balance }}" value="0" step="0.000001">
-                    </div>
+					<div class="slidecontainer">
+						<input
+							type="range"
+							name="range"
+							id="slider-sell"
+							class="slider slider-sell"
+							min="0"
+							max="{{ coin_balance }}"
+							value="0"
+							step="0.000001"
+						/>
+					</div>
 
-                    {% if session["user_id"] %}
-                    <input type="text" name="current-price" id="current-price-sell" class="input-amount hide-input">
+					{% if session["user_id"] %}
+					<input
+						type="text"
+						name="current-price"
+						id="current-price-sell"
+						class="input-amount hide-input"
+					/>
 
-                    <input type="text" name="symbol" id="symbol" class="input-amount hide-input" value="{{ main_coin.symbol }}">
-                    {% endif %}
+					<input
+						type="text"
+						name="symbol"
+						id="symbol"
+						class="input-amount hide-input"
+						value="{{ main_coin.symbol }}"
+					/>
+					{% endif %}
 
-                    <div class="submit-box">
-                        {% if session["user_id"] %}
-                        <input type="submit" 
-                        name="submit" value="Sell {{ main_coin.name }}" id="sell-btn" class="btn-cta--buy btn-cta ls-small center-text">
-                        <div class="layer layer-sell"></div>
-                        {% else %}
-                        <button class="btn-cta--buy btn-cta ls-small">
-                            <a href="/register" class="log-btn">Register</a>
-                            <span>or</span>
-                            <a href="/login" class="log-btn">Log in</a>
-                            <span>to sell</span>
-                        </button>
-                        {% endif %}
-                    </div>
-
-                </form>
-                    {% if session["user_id"] %}
-                    <div class="expire center-text">
-                        <span class="expire-display">The price will be expired in 
-                        <span class="expire-time">60</span>
-                         s
-                        </span>
-                        <span class="expire-text">The price is expired</span>
-                    </div>                
-                    {% endif %}
+					<div class="submit-box">
+						{% if session["user_id"] %}
+						<input
+							type="submit"
+							name="submit"
+							value="Sell {{ main_coin.name }}"
+							id="sell-btn"
+							class="btn-cta--buy btn-cta ls-small center-text"
+						/>
+						<div class="layer layer-sell"></div>
+						{% else %}
+						<button class="btn-cta--buy btn-cta ls-small">
+							<a href="/register" class="log-btn">Register</a>
+							<span>or</span>
+							<a href="/login" class="log-btn">Log in</a>
+							<span>to sell</span>
+						</button>
+						{% endif %}
+					</div>
+				</form>
+				{% if session["user_id"] %}
+				<div class="expire center-text">
+					<span class="expire-display"
+						>The price will be expired in
+						<span class="expire-time">60</span>
+						s
+					</span>
+					<span class="expire-text">The price is expired</span>
+				</div>
+				{% endif %}
 			</div>
 
 			<div class="trend-container">
@@ -340,7 +416,8 @@ Price Chart {% endblock %} {% block left_nav %}
 					</div>
 					<span class="coin-price coin-price--trend">{{ coin.price }}</span>
 				</a>
-                {% endfor %}
+				{% endfor %}
+			</div>
 		</aside>
 	</section>
 
