@@ -1,7 +1,3 @@
-from email import message
-import os
-from turtle import circle
-
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
@@ -40,9 +36,6 @@ home_coins = ["bitcoin", "ethereum", "binancecoin", "tether", "terra-luna", "car
 
 # Trend coins for trade page 
 trade_coins = ["bitcoin", "ethereum", "binancecoin", "terra-luna", "cardano"]
-
-
-
 
 # ALl coins 
 all_coins = []
@@ -178,9 +171,13 @@ def trade(coin_id):
     if session:
         user_id = session["user_id"]
         user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+        user_name = user[0]["username"]
         cash = user[0]["cash"]
-        coin_balance = db.execute("SELECT amount FROM balances WHERE user_id = ? and coin_id = ?", user_id, coin_id)
-        return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True, cash=cash, coin_balance=coin_balance)
+        coin_balance = 0
+        coin_exist = db.execute("SELECT amount FROM balances WHERE user_id = ? and coin_id = ?", user_id, coin_id)
+        if coin_exist:
+            coin_balance = coin_exist[0]["amount"]
+        return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True, cash=cash, coin_balance=coin_balance, user_name=user_name)
     else:
         return render_template("trade.html", main_coin=main_coin, coins=coins, footer=True)
 
@@ -214,3 +211,32 @@ def wallet():
         user_name = user[0]["username"]
         return render_template("wallet.html", footer=False, user_name=user_name)
 
+
+@app.route("/buy/<coin_id>", methods=["POST"])
+def buy(coin_id):
+    user_id = session["user_id"]  
+    if request.method == "POST":
+        spend_usd = float(request.form.get("spend-buy"))
+        recieve_amt = float(request.form.get("recieve-buy"))
+        current_price = float(request.form.get("current-price"))
+        symbol = request.form.get("symbol")
+
+        # Update users table 
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+        new_cash = cash - spend_usd
+        db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
+
+        # Update balances table 
+        coin_exist = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
+        print(coin_exist)
+        if coin_exist:
+            new_amt = float(coin_exist[0]["amount"]) + recieve_amt
+            new_price = (coin_exist[0]["buy_price"] + current_price) / 2
+            db.execute("UPDATE balances SET amount = ?, buy_price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
+        else:
+            db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, buy_price) VALUES(?, ?,?, ?, ?)", user_id, coin_id, symbol, recieve_amt, current_price)
+
+
+
+        return redirect("/wallet")
+    

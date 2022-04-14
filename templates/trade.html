@@ -3,12 +3,69 @@
 {% endblock %} {% block title %} {{ main_coin.name }}({{ main_coin.symbol }})
 Price Chart {% endblock %} {% block left_nav %}
 <div class="main-nav--left centeriod">
+    {% if session["user_id"] %}
+	<div class="account">
+		<button class="user-account">
+			<img
+				src="../static/images/icons/user.svg"
+				alt="user icon"
+				class="account-icon account-icon--user"
+			/>
+			{{ user_name }}
+			<img
+				src="../static/images/icons/sort-down.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortdown"
+			/>
+
+			<img
+				src="../static/images/icons/sort-up.svg"
+				alt="sort down icon"
+				class="account-icon account-icon--sortup"
+			/>
+		</button>
+
+		<ul class="account-setting">
+			<li>
+				<a href="#" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Profile</a
+				>
+			</li>
+			<li>
+				<a href="/wallet" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Wallet</a
+				>
+			</li>
+			<li>
+				<a href="/logout" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Log out</a
+				>
+			</li>
+		</ul>
+	</div>
+	{% else %}
 	<a href="/login" class="log">Log in</a>
 	<a href="/register" class="btn-cta ls-small">Register</a>
+	{% endif %}
 </div>
 {% endblock %} {% block main %}
 
-<main data-template="trade" data-main-coin="{{ main_coin.coin_id }}">
+<main data-template="trade" data-main-coin="{{ main_coin.coin_id }}" data-cash="{{ cash }}" data-bal="{{ coin_balance }}">
 	<section class="section-trading">
 		<article class="trade-article">
 			<div class="chart-container centeriod">
@@ -103,6 +160,7 @@ Price Chart {% endblock %} {% block left_nav %}
 				</div>
 			</div>
 		</article>
+
 		<aside class="trade-aside">
 			<div class="trade-container">
 				<div class="trade-head">
@@ -110,7 +168,7 @@ Price Chart {% endblock %} {% block left_nav %}
 					<button class="sell-btn trade-btn">Sell</button>
 				</div>
 
-				<div class="trade-body trade-body--buy trade-body--active">
+				<form action="/buy/{{ main_coin.coin_id }}" method="post" class="trade-body trade-body--buy trade-body--active" id="buy-form">
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-buy" class="trade-label">Spend</label>
@@ -118,11 +176,15 @@ Price Chart {% endblock %} {% block left_nav %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
-								type="text"
+								type="number"
 								placeholder="20.00 - 10000.00"
+                                min="0"
+                                step="10"
 								id="spend-buy"
 								name="spend-buy"
 								class="input-amount"
+                                autocomplete="off"
+
 							/>
 							<div class="trade-unit">USD</div>
 						</div>
@@ -134,30 +196,72 @@ Price Chart {% endblock %} {% block left_nav %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
-								type="text"
-								placeholder="0.0000"
+								type="number"
+								placeholder="0.000001"
+                                min="0"
+                                step="0.000001"
 								id="recieve-buy"
 								name="recieve-buy"
 								class="input-amount"
+                                autocomplete="off"
+
 							/>
 							<div class="trade-unit">{{ main_coin.symbol }}</div>
 						</div>
 					</div>
-					<button class="btn-cta--buy btn-cta ls-small">
-						Buy {{ main_coin.name }}
-					</button>
-				</div>
 
-				<div class="trade-body trade-body--sell">
+                    <div class="slidecontainer">
+                        <input type="range" name="range" id="slider-buy" class="slider slider-buy" min="0" max="{{ cash }}" value="0" step="1">
+                    </div>
+
+                    {% if session["user_id"] %}
+                    <input type="text" name="current-price" id="current-price-buy" class="input-amount hide-input">
+                    
+                    <input type="text" name="symbol" id="symbol" class="input-amount hide-input" value="{{ main_coin.symbol }}">
+                    {% endif %}
+
+					<div class="submit-box">
+                        {% if session["user_id"] %}
+                        <input type="submit" 
+                        name="submit" value="Buy {{ main_coin.name }}"  id="buy-btn" class="btn-cta--buy btn-cta ls-small center-text">
+                        <div class="layer layer-buy"></div>
+                        {% else %}
+                        <button class="btn-cta--buy btn-cta ls-small">
+                        <a href="/register" class="log-btn">Register</a>
+                        <span>or</span>
+                        <a href="/login" class="log-btn">Log in</a>
+                        <span>to buy</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <!-- {% if session["user_id"] %}
+                    <div class="expire">
+                        <span class="expire-display">The price will be expire in 
+                        <span class="expire-time">60</span>
+                         s
+                        </span>
+                        <span class="expire-text">The price is expired</span>
+                    </div>                
+                    {% endif %} -->
+				</form>
+
+				<form action="/markets" class="trade-body trade-body--sell" id="sell-form">
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-sell" class="trade-label">Spend</label>
+                            {% if coin_balance %}
 							<span class="max">Max : {{ coin_balance }} {{ main_coin.symbol }}</span>
+                            {% else %}
+							<span class="max">Max : 0 {{ main_coin.symbol }}</span>
+                            {% endif %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
-								type="text"
-								placeholder="0.0000"
+								type="number"
+								placeholder="0.000001"
+                                min="0"
+                                step="0.000001"
 								id="spend-sell"
 								name="spend-sell"
 								class="input-amount"
@@ -172,8 +276,10 @@ Price Chart {% endblock %} {% block left_nav %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
-								type="text"
-								placeholder="20.00 - 10000.00 "
+								type="number"
+								placeholder="Minimum : 10"
+                                min="0"
+                                step="10"
 								id="recieve-sell"
 								name="recieve-sell"
 								class="input-amount"
@@ -181,10 +287,42 @@ Price Chart {% endblock %} {% block left_nav %}
 							<div class="trade-unit">USD</div>
 						</div>
 					</div>
-					<button class="btn-cta--buy btn-cta ls-small">
-						Sell {{ main_coin.name }}
-					</button>
-				</div>
+
+                    <div class="slidecontainer">
+                        <input type="range" name="range" id="slider-sell" class="slider slider-sell" min="0" max="{{ coin_balance }}" value="0" step="0.000001">
+                    </div>
+
+                    {% if session["user_id"] %}
+                    <input type="text" name="current-price" id="current-price-sell" class="input-amount hide-input">
+
+                    <input type="text" name="symbol" id="symbol" class="input-amount hide-input" value="{{ main_coin.symbol }}">
+                    {% endif %}
+
+                    <div class="submit-box">
+                        {% if session["user_id"] %}
+                        <input type="submit" 
+                        name="submit" value="Sell {{ main_coin.name }}" id="sell-btn" class="btn-cta--buy btn-cta ls-small center-text">
+                        <div class="layer layer-sell"></div>
+                        {% else %}
+                        <button class="btn-cta--buy btn-cta ls-small">
+                            <a href="/register" class="log-btn">Register</a>
+                            <span>or</span>
+                            <a href="/login" class="log-btn">Log in</a>
+                            <span>to sell</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                </form>
+                    {% if session["user_id"] %}
+                    <div class="expire center-text">
+                        <span class="expire-display">The price will be expired in 
+                        <span class="expire-time">60</span>
+                         s
+                        </span>
+                        <span class="expire-text">The price is expired</span>
+                    </div>                
+                    {% endif %}
 			</div>
 
 			<div class="trend-container">
