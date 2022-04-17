@@ -180,8 +180,10 @@ const getPrice = function () {
 			contentType: "application/json",
 			success: function (result) {
 				currentPrice = result[0]["current_price"];
-				resolve(currentPrice);
+				curPriceBuy.value = currentPrice;
+				curPriceSell.value = currentPrice;
 				priceActive = true;
+				resolve(currentPrice);
 			},
 		});
 	});
@@ -197,7 +199,7 @@ const calculateValue = function (value) {
 	return (value * currentPrice).toFixed(digit);
 };
 
-const validTrade = function (spend, recieve, layer, valid) {
+const color = function (spend, recieve, layer, valid) {
 	let color;
 	if (valid === false) {
 		color = "red";
@@ -263,14 +265,14 @@ spendBuy?.addEventListener("input", async function () {
 	await refreshPrice();
 	cashInput(spendBuy, recieveBuy, sliderBuy, spendBuy);
 	let valid = spendBuy.value < 20 || spendBuy.value > cash ? false : true;
-	validTrade(spendBuy, recieveBuy, layerBuy, valid);
+	color(spendBuy, recieveBuy, layerBuy, valid);
 });
 
 recieveBuy?.addEventListener("input", async function () {
 	await refreshPrice();
 	amtInput(spendBuy, recieveBuy, sliderBuy, spendBuy);
 	let valid = spendBuy.value < 20 || spendBuy.value > cash ? false : true;
-	validTrade(spendBuy, recieveBuy, layerBuy, valid);
+	color(spendBuy, recieveBuy, layerBuy, valid);
 });
 
 sliderBuy?.addEventListener("input", async function () {
@@ -279,12 +281,12 @@ sliderBuy?.addEventListener("input", async function () {
 	if (this.value == 0) {
 		spendBuy.value = "";
 		recieveBuy.value = "";
-		return;
+		layerBuy.style.display = "block";
 	} else {
 		spendBuy.value = this.value;
 		cashInput(spendBuy, recieveBuy, sliderBuy, spendBuy);
 		let valid = spendBuy.value < 20 || spendBuy.value > cash ? false : true;
-		validTrade(spendBuy, recieveBuy, layerBuy, valid);
+		color(spendBuy, recieveBuy, layerBuy, valid);
 	}
 });
 
@@ -293,14 +295,14 @@ spendSell?.addEventListener("input", async function () {
 	await refreshPrice();
 	amtInput(recieveSell, spendSell, sliderSell, spendSell);
 	let valid = recieveSell.value < 10 || spendSell.value > bal ? false : true;
-	validTrade(recieveSell, spendSell, layerSell, valid);
+	color(recieveSell, spendSell, layerSell, valid);
 });
 
 recieveSell?.addEventListener("input", async function () {
 	await refreshPrice();
 	cashInput(recieveSell, spendSell, sliderSell, spendSell);
 	let valid = recieveSell.value < 10 || spendSell.value > bal ? false : true;
-	validTrade(spendSell, recieveSell, layerSell, valid);
+	color(spendSell, recieveSell, layerSell, valid);
 });
 
 sliderSell?.addEventListener("input", async function () {
@@ -309,17 +311,17 @@ sliderSell?.addEventListener("input", async function () {
 	if (this.value == 0) {
 		spendSell.value = "";
 		recieveSell.value = "";
-		return;
+		layerSell.style.display = "block";
 	} else {
 		spendSell.value = this.value;
 		amtInput(recieveSell, spendSell, sliderSell, spendSell);
 		let valid = recieveSell.value < 10 || spendSell.value > bal ? false : true;
-		validTrade(recieveSell, spendSell, layerSell, valid);
+		color(recieveSell, spendSell, layerSell, valid);
 	}
 });
 
-// const validate = function () {
-// 	if (recieveSell.value < 10) {
-// 		return false;
-// 	}
-// };
+const validate = function () {
+	if (recieveSell.value < 10) {
+		return false;
+	}
+};

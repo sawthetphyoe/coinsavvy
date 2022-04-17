@@ -10,6 +10,11 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
+def decimal_four(value):
+    if value == None: return "--"
+    value = float(value)
+    return f"{value:.4f}"
+
 def usd(value, digit=2):
     if value == None: return "--"
     value = float(value)

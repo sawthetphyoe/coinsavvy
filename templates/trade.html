@@ -200,8 +200,8 @@ Price Chart {% endblock %} {% block left_nav %}
 							<input
 								type="number"
 								placeholder="20.00 - 10000.00"
-								min="0"
-								step="10"
+								min="20"
+								step="0.000001"
 								id="spend-buy"
 								name="spend-buy"
 								class="input-amount"
@@ -249,6 +249,7 @@ Price Chart {% endblock %} {% block left_nav %}
 						name="current-price"
 						id="current-price-buy"
 						class="input-amount hide-input"
+						value="0"
 					/>
 
 					<input
@@ -279,20 +280,11 @@ Price Chart {% endblock %} {% block left_nav %}
 						</button>
 						{% endif %}
 					</div>
-
-					<!-- {% if session["user_id"] %}
-                    <div class="expire">
-                        <span class="expire-display">The price will be expire in 
-                        <span class="expire-time">60</span>
-                         s
-                        </span>
-                        <span class="expire-text">The price is expired</span>
-                    </div>                
-                    {% endif %} -->
 				</form>
 
 				<form
-					action="/markets"
+					action="/sell/{{ main_coin.coin_id }}"
+					method="post"
 					class="trade-body trade-body--sell"
 					id="sell-form"
 				>
@@ -301,7 +293,8 @@ Price Chart {% endblock %} {% block left_nav %}
 							<label for="spend-sell" class="trade-label">Spend</label>
 							{% if coin_balance %}
 							<span class="max"
-								>Max : {{ coin_balance }} {{ main_coin.symbol }}</span
+								>Max : {{ coin_balance | decimal_four }} {{ main_coin.symbol
+								}}</span
 							>
 							{% else %}
 							<span class="max">Max : 0 {{ main_coin.symbol }}</span>
@@ -329,8 +322,8 @@ Price Chart {% endblock %} {% block left_nav %}
 							<input
 								type="number"
 								placeholder="Minimum : 10"
-								min="0"
-								step="10"
+								min="10"
+								step="0.000001"
 								id="recieve-sell"
 								name="recieve-sell"
 								class="input-amount"
@@ -358,6 +351,7 @@ Price Chart {% endblock %} {% block left_nav %}
 						name="current-price"
 						id="current-price-sell"
 						class="input-amount hide-input"
+						value="0"
 					/>
 
 					<input

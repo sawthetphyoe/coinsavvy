@@ -218,6 +218,18 @@
 	color: var(--gray__shade7);
 }
 
+/* Chrome, Safari, Edge, Opera */
+.input-amount::-webkit-outer-spin-button,
+.input-amount::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+.input-amount[type="number"] {
+	-moz-appearance: textfield;
+}
+
 .input-amount::placeholder {
 	color: var(--gray__shade4);
 }
@@ -239,6 +251,7 @@
 .btn-cta--buy {
 	width: 100%;
 	border: none;
+	transition: all 0.3s;
 }
 
 .expire {
@@ -273,7 +286,6 @@ button.btn-cta a.log-btn {
 	padding: 0 0.5rem;
 	color: var(--gray__shade7);
 	text-decoration: underline;
-	transition: all 0.3s;
 }
 
 button.btn-cta a.log-btn:hover {

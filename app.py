@@ -1,10 +1,11 @@
+from unicodedata import decimal
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import  usd, look
+from helpers import  decimal_four, usd, look
 
 # Configure application
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Custom filter
 app.jinja_env.filters["usd"] = usd
+app.jinja_env.filters["decimal_four"] = decimal_four
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -154,6 +156,9 @@ def register():
         # Get new user from database
         new_user = db.execute("SELECT * FROM users WHERE username = ?", user)
 
+        # Insert USD coin balance into database
+        db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, price) VALUES (?, ?, ?, ?, ?)", new_user[0]["id"], "usd-coin", "USD", 10000, 1)
+
         # Remember which user has logged in
         session["user_id"] = new_user[0]["id"]
 
@@ -207,11 +212,21 @@ def apology():
 def wallet():
     if session:
         user_id = session["user_id"]
-        user = db.execute("SELECT * FROM users WHERE id = ?", user_id)
-        user_name = user[0]["username"]
-        return render_template("wallet.html", footer=False, user_name=user_name)
+        user = db.execute("SELECT * FROM users WHERE id = ?", user_id)[0]
+        transitions = db.execute("SELECT * FROM transitions WHERE user_id = ? ORDER BY id DESC", user_id)
+        history_coins = []
+        for transition in transitions:
+            history_coins.append(transition["coin_id"]) 
+        looked_history_coins = look(history_coins)
+        coin_images = {}
+        for coin in looked_history_coins:
+            coin_images[coin["coin_id"]] = coin["image"]
+        for transition in transitions:
+            transition["coin_logo"] = coin_images[transition["coin_id"]]
+        return render_template("wallet.html", footer=False, user=user, transitions=transitions)
 
 
+# Buy Action route
 @app.route("/buy/<coin_id>", methods=["POST"])
 def buy(coin_id):
     user_id = session["user_id"]  
@@ -227,16 +242,47 @@ def buy(coin_id):
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
 
         # Update balances table 
+        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd-coin")
         coin_exist = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         print(coin_exist)
         if coin_exist:
             new_amt = float(coin_exist[0]["amount"]) + recieve_amt
-            new_price = (coin_exist[0]["buy_price"] + current_price) / 2
-            db.execute("UPDATE balances SET amount = ?, buy_price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
+            new_price = (coin_exist[0]["price"] + current_price) / 2
+            db.execute("UPDATE balances SET amount = ?, price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
         else:
-            db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, buy_price) VALUES(?, ?,?, ?, ?)", user_id, coin_id, symbol, recieve_amt, current_price)
+            db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, price) VALUES(?, ?, ?, ?, ?)", user_id, coin_id, symbol, recieve_amt, current_price)
 
+        # Update transitions table
+        db.execute("INSERT INTO transitions (user_id, coin_id, symbol, amount, price, value, action) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, coin_id, symbol, recieve_amt, current_price, spend_usd, "BUY")
 
-
+            
         return redirect("/wallet")
     
+
+# Sell Action route
+@app.route("/sell/<coin_id>", methods=["POST"])
+def sell(coin_id):
+    user_id = session["user_id"]  
+    if request.method == "POST":
+        spend_amt = float(request.form.get("spend-sell"))
+        recieve_usd = float(request.form.get("recieve-sell"))
+        current_price = float(request.form.get("current-price"))
+        symbol = request.form.get("symbol")
+
+        # Update users table 
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+        new_cash = cash + recieve_usd
+        db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
+
+        # Update balances table 
+        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd-coin")
+        coin = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
+        new_amt = float(coin[0]["amount"]) - spend_amt
+        new_price = (coin[0]["price"] + current_price) / 2
+        db.execute("UPDATE balances SET amount = ?, price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
+
+        # Update transitions table
+        db.execute("INSERT INTO transitions (user_id, coin_id, symbol, amount, price, value, action) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, coin_id, symbol, spend_amt, current_price, recieve_usd, "SELL")
+
+            
+        return redirect("/wallet")

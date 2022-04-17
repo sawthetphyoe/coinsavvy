@@ -39,10 +39,11 @@
 }
 
 .wallet-subhead {
-	font-size: 2rem;
+	font-size: 2.2rem;
 	font-weight: 500;
 	padding-left: 0.5rem;
 	margin-bottom: 2rem;
+	color: var(--gray__shade8);
 }
 
 .capital-container {
@@ -77,7 +78,7 @@
 
 .total-amount {
 	font-size: 3rem;
-	font-weight: 500;
+	/* font-weight: 500; */
 	color: var(--gray__shade8);
 }
 
@@ -142,77 +143,90 @@
 }
 
 .portfolio .scroll-data {
-	max-height: 36.4rem;
+	max-height: 60rem;
 	overflow-y: scroll;
 }
 
 .table-row {
 	display: grid;
-	grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1.2fr 1fr;
+	grid-template-columns: 2.5fr 2fr 1fr 1.3fr 1.5fr 2fr;
 	align-items: center;
+	height: 6rem;
+	padding-left: 4rem;
+}
+
+.table-row--head {
+	border-bottom: 1px solid var(--gray__shade3);
 }
 
 .table-row--head span {
 	font-size: 1.4rem;
 	color: var(--gray__shade6);
-	padding: 2rem 4rem;
-	border-bottom: 1px solid var(--gray__shade3);
 }
 
 .table-row--body > span,
 .table-row--body > div {
 	font-size: 1.6rem;
 	color: var(--gray__shade8);
-	padding: 2rem 4rem;
+	/* padding: 2rem 4rem; */
 }
 
 .portfolio-coin,
 .history-coin {
 	display: flex;
-	gap: 1.6rem;
+	gap: 1.5rem;
 	align-items: center;
 }
 
 .portfolio-coin--logo,
 .history-coin--logo {
-	width: 2.6rem;
-	height: 2.6rem;
+	width: 2.2rem;
+	height: 2.2rem;
 }
 
 .t-right {
 	text-align: right;
 }
 
-.portfolio-row--body .portfolio-btn--box {
-	padding: 0 4rem;
+.table-row--portfolio div.portfolio-btn--box {
+	padding-left: 2rem;
+	justify-self: center;
 }
 
 .portfolio-btn--box.trans {
 	color: transparent;
 }
 
-.portfolio-btn {
+#portfolio-btn {
+	color: var(--gray__shade8);
 	font-size: 1.4rem;
 	padding: 0.8rem 1.6rem;
 	border-radius: 5px;
 	border: none;
 	background-color: var(--yellow);
 	transition: all 0.3s;
+	cursor: pointer;
 }
 
-.portfolio-btn:hover {
+#portfolio-btn:hover {
 	background-color: var(--yellow__tint4);
 }
 
 .table-row--history {
-	grid-template-columns: 1.5fr 1.5fr 2fr 1.5fr 1.5fr 2fr;
+	grid-template-columns: 1.5fr 2fr 2.3fr 2fr 2fr 2.5fr;
 }
 
 .history .scroll-data {
-	max-height: 33rem;
+	max-height: 30rem;
 	overflow-y: scroll;
 }
 
-.table-row--body span.history-date {
+.table-row span.history-date {
+	padding-left: 0;
 	padding-right: 3rem;
+}
+
+.table-row--head {
+	/* padding-right: 3rem; */
+	margin-right: 1.5rem;
 }
