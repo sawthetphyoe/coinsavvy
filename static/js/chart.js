@@ -34,34 +34,6 @@ const drawPieSlice = function (
 	ctx.fill();
 };
 
-// drawLine(ctx, 100, 100, 200, 200);
-// drawArc(ctx, 150, 150, 150, 0, Math.PI / 3);
-// drawPieSlice(
-// 	ctx,
-// 	150,
-// 	150,
-// 	150,
-// 	Math.PI / 2,
-// 	Math.PI / 2 + Math.PI / 4,
-// 	"#ff0000"
-// );
-
-// console.log(typeof ctx);
-// console.log(ctx);
-
-const myVinyls = {
-	Classical: 10,
-	Alternative: 10,
-	Pop: 5,
-	Jazz: 10,
-	Rap: 3,
-	Ro: 5,
-	Rck: 5,
-	// k: 5,
-	// kpop: 5,
-	// raggae: 5,
-};
-
 class pieChart {
 	constructor(options) {
 		this.options = options;
@@ -112,27 +84,46 @@ class pieChart {
 	}
 }
 
-const myPiechart = new pieChart({
-	canvas: myCanvas,
-	data: myVinyls,
-	colors: ["#fde23e", "#f16e23", "#57d9ff", "#937e88"],
-});
-// myPiechart.draw();
+const myCoins = {};
 
 const myDoungnutChart = new pieChart({
 	canvas: myCanvas,
-	data: myVinyls,
+	data: myCoins,
 	colors: [
-		"#5F6A6A",
-		"#003f5c",
-		"#58508d",
-		"#bc5090",
+		"#9DA1AA",
+		"#1E2460",
+		"#E4A010",
+		"#7E7B52",
+		"#642424",
+		"#193737",
+		"#A03472",
+		"#705335",
+		"#E1CC4F",
+		"#3E3B32",
+		"#8673A1",
+		"#CC0605",
 		"#a99207",
-		"#ffa600",
-		"#5DADE2",
-		"#302a02",
-		"#6E2C00",
-		"#f4d93b",
+		"#354D73",
+		"#00aa99",
+		"#6F4F28",
+		"#E55137",
+		"#252850",
+		"#00BB2D",
+		"#4C2F27",
+		"#B5B8B1",
+		"#CB2821",
+		"#424632",
+		"#D36E70",
+		"#955F20",
+		"#1D334A",
+		"#6C7156",
+		"#A65E2E",
+		"#2D572C",
+		"#E63244",
+		"#008F39",
+		"#B44C43",
+		"#a5b800",
+		"#D53032",
 	],
 	holeSize: 0.7,
 });

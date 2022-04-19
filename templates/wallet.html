@@ -113,24 +113,38 @@
 			</div>
 
 			<div class="scroll-data">
-				<div class="table-row table-row--portfolio table-row--body">
+				{% for balance in balances %}
+				<div
+					class="table-row table-row--portfolio table-row--body"
+					data-init-price="{{ balance.price }}"
+				>
 					<div class="portfolio-coin">
 						<img
-							src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
-							alt="bitcoin logo"
+							src="{{ balance.coin_logo}}"
+							alt="{{ balance.coin_id }} logo"
 							class="portfolio-coin--logo"
 						/>
-						<span class="portfolio-coin--name">BTC</span>
+						<span class="portfolio-coin--name">{{ balance.symbol }}</span>
 					</div>
-
-					<span class="portfolio-amount">0.00034</span>
-					<span class="portfolio-value">$5,342</span>
-					<span class="portfolio-pnlvalue t-right">$187</span>
-					<span class="portfolio-pnlpercent t-right">+3.4%</span>
+					{% if balance.symbol == "USD" %}
+					<span class="portfolio-amount">--</span>
+					<span class="portfolio-value">{{ balance.amount | usd }}</span>
+					<span class="portfolio-pnlvalue t-right">--</span>
+					<span class="portfolio-pnlpercent t-right">--</span>
+					<div class="portfolio-btn--box t-right"></div>
+					{% else %}
+					<span class="portfolio-amount">{{ balance.amount }}</span>
+					<span class="portfolio-value">--</span>
+					<span class="portfolio-pnlvalue t-right">--</span>
+					<span class="portfolio-pnlpercent t-right">--</span>
 					<div class="portfolio-btn--box t-right">
-						<a href="#" id="portfolio-btn">Trade</a>
+						<a href="/trade/{{ balance.coin_id }}" id="portfolio-btn"
+							>Buy/Sell</a
+						>
 					</div>
+					{% endif %}
 				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

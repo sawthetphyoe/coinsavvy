@@ -194,7 +194,7 @@ Price Chart {% endblock %} {% block left_nav %}
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-buy" class="trade-label">Spend</label>
-							<span class="max">Max : {{ cash }} USD</span>
+							<span class="max">Max : {{ cash | decimal_four }} USD</span>
 						</div>
 						<div class="trade-input-inside-group">
 							<input
@@ -415,12 +415,15 @@ Price Chart {% endblock %} {% block left_nav %}
 		</aside>
 	</section>
 
+	{% if not session["user_id"] %}
 	<section class="section-prefooter">
 		<h2>Start with Bitcoin Now</h2>
 		<a href="/register" class="btn-cta ls-small">Register Now</a>
 	</section>
+	{% endif %}
 </main>
 
 {% endblock %} {% block script %}
 <script src="../static/js/main.js"></script>
+<script src="../static/js/trade.js"></script>
 {% endblock %}

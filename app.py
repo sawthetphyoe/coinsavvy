@@ -1,3 +1,4 @@
+from crypt import methods
 from unicodedata import decimal
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -207,23 +208,38 @@ def apology():
     return render_template("apology.html", message=message)
 
 
+def add_images(data_array):
+    tolook_coins = []
+    for coin in data_array:
+        if coin["coin_id"] != "usd-coin":
+            tolook_coins.append(coin["coin_id"]) 
+    looked_coins = look(tolook_coins)
+    coin_images = {}
+    for coin in looked_coins:
+        coin_images[coin["coin_id"]] = coin["image"]
+    for coin in data_array:
+        if coin["coin_id"] == "usd-coin": 
+            coin["coin_logo"] = "../static/images/icons/usd-circle.svg"
+        else:
+            coin["coin_logo"] = coin_images[coin["coin_id"]]
+
+
 # Wallet page route 
 @app.route("/wallet", methods=["POST", "GET"])
 def wallet():
     if session:
         user_id = session["user_id"]
         user = db.execute("SELECT * FROM users WHERE id = ?", user_id)[0]
+
+        # Get Balances Data and Mordify
+        balances = db.execute("SELECT * FROM balances WHERE user_id = ?", user_id)
+        add_images(balances)
+        
+        # Get History Data and Mordify 
         transitions = db.execute("SELECT * FROM transitions WHERE user_id = ? ORDER BY id DESC", user_id)
-        history_coins = []
-        for transition in transitions:
-            history_coins.append(transition["coin_id"]) 
-        looked_history_coins = look(history_coins)
-        coin_images = {}
-        for coin in looked_history_coins:
-            coin_images[coin["coin_id"]] = coin["image"]
-        for transition in transitions:
-            transition["coin_logo"] = coin_images[transition["coin_id"]]
-        return render_template("wallet.html", footer=False, user=user, transitions=transitions)
+        add_images(transitions)
+
+        return render_template("wallet.html", footer=False, user=user, transitions=transitions, balances=balances)
 
 
 # Buy Action route
@@ -278,11 +294,15 @@ def sell(coin_id):
         db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd-coin")
         coin = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         new_amt = float(coin[0]["amount"]) - spend_amt
-        new_price = (coin[0]["price"] + current_price) / 2
-        db.execute("UPDATE balances SET amount = ?, price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
-
+        if new_amt > 0:
+            new_price = (coin[0]["price"] + current_price) / 2
+            db.execute("UPDATE balances SET amount = ?, price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
+        else: 
+            db.execute("DELETE FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         # Update transitions table
         db.execute("INSERT INTO transitions (user_id, coin_id, symbol, amount, price, value, action) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, coin_id, symbol, spend_amt, current_price, recieve_usd, "SELL")
 
             
         return redirect("/wallet")
+
+
