@@ -25,33 +25,13 @@
 
 		<ul class="account-setting">
 			<li>
-				<a href="#" class="account-setting--link"
+				<a href="/wallet" class="account-setting--link"
 					><img
 						src="../static/images/icons/caret-right.svg"
 						alt="caret right icon"
 						class="caret-icon"
 					/>
-					Profile</a
-				>
-			</li>
-			<li>
-				<a href="#" class="account-setting--link"
-					><img
-						src="../static/images/icons/caret-right.svg"
-						alt="caret right icon"
-						class="caret-icon"
-					/>
-					Overview</a
-				>
-			</li>
-			<li>
-				<a href="#" class="account-setting--link"
-					><img
-						src="../static/images/icons/caret-right.svg"
-						alt="caret right icon"
-						class="caret-icon"
-					/>
-					History</a
+					Wallet</a
 				>
 			</li>
 			<li>
@@ -62,6 +42,16 @@
 						class="caret-icon"
 					/>
 					Log out</a
+				>
+			</li>
+			<li>
+				<a href="/delete" class="account-setting--link"
+					><img
+						src="../static/images/icons/caret-right.svg"
+						alt="caret right icon"
+						class="caret-icon"
+					/>
+					Delete Account</a
 				>
 			</li>
 		</ul>
@@ -80,8 +70,8 @@
 				/>
 				<span class="total-heading capital-subhead">Total Capital</span>
 				<span class="pnl-heading capital-subhead">Total PNL</span>
-				<span class="total-amount ls-small">{{ user.cash | usd}}</span>
-				<span class="pnl-percent pnl-content">-0.00%</span>
+				<span class="total-amount ls-small">--</span>
+				<span class="pnl-content ls-small">--</span>
 			</div>
 		</div>
 
@@ -89,13 +79,7 @@
 			<h3 class="wallet-subhead">Asset Allocation</h3>
 			<div class="asset">
 				<canvas class="myCanvas" id="myCanvas"></canvas>
-				<div class="label-box">
-					<div class="label">
-						<span class="label-color"></span>
-						<span class="label-coin">USD Coin</span>
-						<span class="label-percent">54%</span>
-					</div>
-				</div>
+				<div class="label-box"></div>
 			</div>
 		</div>
 	</div>
@@ -106,7 +90,7 @@
 			<div class="table-row table-row--head table-row--portfolio">
 				<span class="portfolio-coinname">Coin</span>
 				<span class="portfolio-amount">Amount</span>
-				<span class="portfolio-value">Value</span>
+				<span class="portfolio-value t-right">Value</span>
 				<span class="portfolio-pnlvalue t-right">PNL</span>
 				<span class="portfolio-pnlpercent t-right">PNL % </span>
 				<span class="portfolio-btn--box t-right trans">foo</span>
@@ -115,8 +99,11 @@
 			<div class="scroll-data">
 				{% for balance in balances %}
 				<div
-					class="table-row table-row--portfolio table-row--body"
+					class="table-row table-row--portfolio table-row--body portfolio-coins"
+					data-coin-id="{{ balance.coin_id }}"
+					data-amount="{{ balance.amount }}"
 					data-init-price="{{ balance.price }}"
+					id="{{ balance.coin_id }}"
 				>
 					<div class="portfolio-coin">
 						<img
@@ -126,23 +113,19 @@
 						/>
 						<span class="portfolio-coin--name">{{ balance.symbol }}</span>
 					</div>
-					{% if balance.symbol == "USD" %}
-					<span class="portfolio-amount">--</span>
-					<span class="portfolio-value">{{ balance.amount | usd }}</span>
-					<span class="portfolio-pnlvalue t-right">--</span>
-					<span class="portfolio-pnlpercent t-right">--</span>
-					<div class="portfolio-btn--box t-right"></div>
-					{% else %}
-					<span class="portfolio-amount">{{ balance.amount }}</span>
-					<span class="portfolio-value">--</span>
+					<span class="portfolio-amount"
+						>{{ balance.amount | decimal_four}}</span
+					>
+					<span class="portfolio-value t-right">--</span>
 					<span class="portfolio-pnlvalue t-right">--</span>
 					<span class="portfolio-pnlpercent t-right">--</span>
 					<div class="portfolio-btn--box t-right">
+						{% if balance.symbol != "USD" %}
 						<a href="/trade/{{ balance.coin_id }}" id="portfolio-btn"
 							>Buy/Sell</a
 						>
+						{% endif %}
 					</div>
-					{% endif %}
 				</div>
 				{% endfor %}
 			</div>
@@ -156,8 +139,8 @@
 				<span class="history-action">Action</span>
 				<span class="history-name">Coin</span>
 				<span class="history-amount">Amount</span>
-				<span class="history-price">Price</span>
-				<span class="history-value">Value</span>
+				<span class="history-price t-right">Price</span>
+				<span class="history-value t-right">Value</span>
 				<span class="history-date t-right">Date</span>
 			</div>
 
@@ -174,15 +157,23 @@
 						<span class="history-coin--name">{{ transition.symbol }}</span>
 					</div>
 					<span class="history-amount">{{ transition.amount }}</span>
-					<span class="history-price">{{ transition.price | usd }}</span>
-					<span class="history-value">{{ transition.value | usd }}</span>
+					<span class="history-price t-right"
+						>{{ transition.price | usd }}</span
+					>
+					<span class="history-value t-right"
+						>{{ transition.value | usd }}</span
+					>
 					<span class="history-date t-right">{{ transition.time }}</span>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
 	</div>
+	<div class="copyright">
+		<span>&COPY; 2022 CoinSavvy, Inc. All Rights Reserved</span>
+	</div>
 </main>
 {% endblock %} {% block script %}
-<script src="../static/js/chart.js"></script>
+<!-- <script src="../static/js/chart.js"></script> -->
+<script src="../static/js/wallet.js"></script>
 {% endblock %}

@@ -84,7 +84,10 @@ class pieChart {
 	}
 }
 
-const myCoins = {};
+const myCoins = {
+	binance: 20,
+	bitcoin: 50,
+};
 
 const myDoungnutChart = new pieChart({
 	canvas: myCanvas,

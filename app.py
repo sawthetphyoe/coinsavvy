@@ -4,7 +4,7 @@ from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash, login_required
 
 from helpers import  decimal_four, usd, look
 
@@ -158,7 +158,7 @@ def register():
         new_user = db.execute("SELECT * FROM users WHERE username = ?", user)
 
         # Insert USD coin balance into database
-        db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, price) VALUES (?, ?, ?, ?, ?)", new_user[0]["id"], "usd-coin", "USD", 10000, 1)
+        db.execute("INSERT INTO balances (user_id, coin_id, symbol, amount, price) VALUES (?, ?, ?, ?, ?)", new_user[0]["id"], "usd", "USD", 10000, 1)
 
         # Remember which user has logged in
         session["user_id"] = new_user[0]["id"]
@@ -190,6 +190,7 @@ def trade(coin_id):
 
 # Update route 
 @app.route("/update", methods=["POST", "GET"])
+@login_required
 def update():
     if request.method == "POST":
         data = request.get_json()
@@ -211,14 +212,15 @@ def apology():
 def add_images(data_array):
     tolook_coins = []
     for coin in data_array:
-        if coin["coin_id"] != "usd-coin":
+        if coin["coin_id"] != "usd":
             tolook_coins.append(coin["coin_id"]) 
     looked_coins = look(tolook_coins)
+    # if not looked_coins: return
     coin_images = {}
     for coin in looked_coins:
         coin_images[coin["coin_id"]] = coin["image"]
     for coin in data_array:
-        if coin["coin_id"] == "usd-coin": 
+        if coin["coin_id"] == "usd": 
             coin["coin_logo"] = "../static/images/icons/usd-circle.svg"
         else:
             coin["coin_logo"] = coin_images[coin["coin_id"]]
@@ -226,6 +228,7 @@ def add_images(data_array):
 
 # Wallet page route 
 @app.route("/wallet", methods=["POST", "GET"])
+@login_required
 def wallet():
     if session:
         user_id = session["user_id"]
@@ -244,9 +247,14 @@ def wallet():
 
 # Buy Action route
 @app.route("/buy/<coin_id>", methods=["POST"])
+@login_required
 def buy(coin_id):
     user_id = session["user_id"]  
     if request.method == "POST":
+        # Check coin limit in wallet
+        coins_in_wallet = db.execute("SELECT id FROM balances WHERE user_id = ?", user_id)
+        if len(coins_in_wallet) >= 10:
+            return render_template("apology.html", message="Number of coins in your wallet reached its limit of 10.")
         spend_usd = float(request.form.get("spend-buy"))
         recieve_amt = float(request.form.get("recieve-buy"))
         current_price = float(request.form.get("current-price"))
@@ -258,7 +266,7 @@ def buy(coin_id):
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
 
         # Update balances table 
-        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd-coin")
+        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd")
         coin_exist = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         print(coin_exist)
         if coin_exist:
@@ -277,6 +285,7 @@ def buy(coin_id):
 
 # Sell Action route
 @app.route("/sell/<coin_id>", methods=["POST"])
+@login_required
 def sell(coin_id):
     user_id = session["user_id"]  
     if request.method == "POST":
@@ -291,14 +300,14 @@ def sell(coin_id):
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
 
         # Update balances table 
-        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd-coin")
+        db.execute("UPDATE balances SET amount = ? WHERE user_id = ? AND coin_id = ?", new_cash, user_id, "usd")
         coin = db.execute("SELECT * FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         new_amt = float(coin[0]["amount"]) - spend_amt
-        if new_amt > 0:
+        if new_amt <= 0:
+            db.execute("DELETE FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
+        else: 
             new_price = (coin[0]["price"] + current_price) / 2
             db.execute("UPDATE balances SET amount = ?, price = ? WHERE user_id = ? AND coin_id = ?", new_amt, new_price, user_id, coin_id)
-        else: 
-            db.execute("DELETE FROM balances WHERE user_id = ? AND coin_id = ?", user_id, coin_id)
         # Update transitions table
         db.execute("INSERT INTO transitions (user_id, coin_id, symbol, amount, price, value, action) VALUES (?, ?, ?, ?, ?, ?, ?)", user_id, coin_id, symbol, spend_amt, current_price, recieve_usd, "SELL")
 
@@ -306,3 +315,14 @@ def sell(coin_id):
         return redirect("/wallet")
 
 
+@app.route("/delete")
+@login_required
+def delete():
+    if request.method == "GET":
+        user_id = session["user_id"]  
+        db.execute("DELETE FROM transitions WHERE user_id = ?", user_id)
+        db.execute("DELETE FROM balances WHERE user_id = ?", user_id)
+        db.execute("DELETE FROM users WHERE id = ?", user_id)
+        session.clear()
+        
+        return redirect("/")

@@ -202,12 +202,12 @@ button.user-account {
 	display: none;
 	position: absolute;
 	top: 100%;
-	left: 0;
+	left: -50%;
 	background-color: #fff;
 	box-shadow: 0 0 3rem rgba(0, 0, 0, 0.095);
 	border-radius: 7px;
-	width: 17rem;
-	padding: 2.4rem 3.2rem;
+	width: 21rem;
+	padding: 2.4rem;
 	flex-direction: column;
 	gap: 2.4rem;
 }

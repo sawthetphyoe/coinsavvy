@@ -95,13 +95,11 @@ const getPrice = function () {
 };
 
 const calculateAmt = function (value) {
-	let digit = currentPrice > 10000 ? 6 : 4;
-	return (value / currentPrice).toFixed(digit);
+	return (value / currentPrice).toFixed(4);
 };
 
 const calculateValue = function (value) {
-	let digit = currentPrice > 10000 ? 2 : 4;
-	return (value * currentPrice).toFixed(digit);
+	return (value * currentPrice).toFixed(4);
 };
 
 const color = function (spend, recieve, layer, valid) {
