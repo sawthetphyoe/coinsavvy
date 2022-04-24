@@ -4,7 +4,7 @@ from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
-from werkzeug.security import check_password_hash, generate_password_hash, login_required
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import  decimal_four, usd, look
 
@@ -190,7 +190,6 @@ def trade(coin_id):
 
 # Update route 
 @app.route("/update", methods=["POST", "GET"])
-@login_required
 def update():
     if request.method == "POST":
         data = request.get_json()
@@ -228,7 +227,6 @@ def add_images(data_array):
 
 # Wallet page route 
 @app.route("/wallet", methods=["POST", "GET"])
-@login_required
 def wallet():
     if session:
         user_id = session["user_id"]
@@ -247,7 +245,6 @@ def wallet():
 
 # Buy Action route
 @app.route("/buy/<coin_id>", methods=["POST"])
-@login_required
 def buy(coin_id):
     user_id = session["user_id"]  
     if request.method == "POST":
@@ -285,7 +282,6 @@ def buy(coin_id):
 
 # Sell Action route
 @app.route("/sell/<coin_id>", methods=["POST"])
-@login_required
 def sell(coin_id):
     user_id = session["user_id"]  
     if request.method == "POST":
@@ -316,7 +312,6 @@ def sell(coin_id):
 
 
 @app.route("/delete")
-@login_required
 def delete():
     if request.method == "GET":
         user_id = session["user_id"]  
