@@ -1,5 +1,7 @@
-cs50
-Flask
-Flask-Session
-requests
 
+requests
+flask
+cs50
+flask_session
+werkzeug
+gunicorn

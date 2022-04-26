@@ -147,6 +147,10 @@ body {
 	line-height: 3rem;
 }
 
+.right-links a:hover {
+	color: var(--yellow);
+}
+
 .sort-down {
 	width: 1.1rem;
 }

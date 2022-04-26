@@ -1,7 +1,7 @@
 "use strict";
 
 ////////// Variables to change later //////////
-const autoRefresh = false;
+const autoRefresh = true;
 const autoUpdateInterval = 6000;
 
 ////////// Sticky Nav //////////
@@ -49,8 +49,8 @@ const update = function () {
 			if (data.template == "index" || data.template == "market") {
 				length = Object.keys(result).length;
 				for (let i = 0; i < length; i++) {
-					coin = result[i];
-					row = document.querySelector(`.${coin.symbol}`);
+					let coin = result[i];
+					let row = document.querySelector(`.${coin.symbol}`);
 					if (row) {
 						row.querySelector(".coin-price").innerHTML = coin.price;
 						row.querySelector(".coin-market-cap").innerHTML = coin.market_cap;
@@ -59,7 +59,7 @@ const update = function () {
 					}
 				}
 			} else if (data.template == "trade") {
-				coin = result[0];
+				let coin = result[0];
 				document.querySelector(".coin-ath").innerHTML = coin.ath;
 				document.querySelector(".coin-price-change-1h").innerHTML =
 					coin.price_change_1h;

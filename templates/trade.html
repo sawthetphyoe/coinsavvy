@@ -121,6 +121,13 @@ Price Chart {% endblock %} {% block left_nav %}
 				<!-- TradingView Widget END -->
 			</div>
 
+			<div class="disclaimer">
+				<p class="disclaim">
+					You can buy real {{ main_coin.symbol }} coin from
+					<a href="https://www.binance.com/en" id="real-link">Binance</a>.
+				</p>
+			</div>
+
 			<div class="info-container">
 				<div class="info-box info-box--price">
 					<h3 class="info-box--head">
@@ -194,7 +201,11 @@ Price Chart {% endblock %} {% block left_nav %}
 					<div class="trade-input--group">
 						<div class="trade-input-inside-group">
 							<label for="spend-buy" class="trade-label">Spend</label>
-							<span class="max">Max : {{ cash | decimal_four }} USD</span>
+							{% if cash %}
+							<span class="max">Max : {{ cash | decimal_four }} </span>
+							{% else %}
+							<span class="max">Max : 0 USD</span>
+							{% endif %}
 						</div>
 						<div class="trade-input-inside-group">
 							<input
@@ -243,7 +254,6 @@ Price Chart {% endblock %} {% block left_nav %}
 						/>
 					</div>
 
-					{% if session["user_id"] %}
 					<input
 						type="text"
 						name="current-price"
@@ -259,7 +269,6 @@ Price Chart {% endblock %} {% block left_nav %}
 						class="input-amount hide-input"
 						value="{{ main_coin.symbol }}"
 					/>
-					{% endif %}
 
 					<div class="submit-box">
 						{% if session["user_id"] %}
@@ -345,7 +354,6 @@ Price Chart {% endblock %} {% block left_nav %}
 						/>
 					</div>
 
-					{% if session["user_id"] %}
 					<input
 						type="text"
 						name="current-price"
@@ -361,7 +369,6 @@ Price Chart {% endblock %} {% block left_nav %}
 						class="input-amount hide-input"
 						value="{{ main_coin.symbol }}"
 					/>
-					{% endif %}
 
 					<div class="submit-box">
 						{% if session["user_id"] %}

@@ -136,6 +136,7 @@ const amtInput = function (cash, amount, slider, sliderValue) {
 };
 
 const priceExipreTimer = function () {
+	if (!expireBox) return;
 	if (hideTimer) clearTimeout(hideTimer);
 	expireBox.style.display = "block";
 	expireDisplay.style.display = "block";
@@ -152,7 +153,7 @@ const priceExipreTimer = function () {
 		}
 		time--;
 	};
-	let time = 60;
+	let time = 10;
 	tick();
 	timer = setInterval(tick, 1000);
 };
