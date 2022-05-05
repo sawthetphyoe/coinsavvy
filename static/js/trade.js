@@ -77,21 +77,15 @@ sellBtn?.addEventListener("click", function () {
 
 ////////// Calculate Buy/Sell //////////
 // Functions
-const getPrice = function () {
-	return new Promise((resolve) => {
-		$.ajax({
-			type: "GET",
-			url: `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coin}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d`,
-			contentType: "application/json",
-			success: function (result) {
-				currentPrice = result[0]["current_price"];
-				curPriceBuy.value = currentPrice;
-				curPriceSell.value = currentPrice;
-				priceActive = true;
-				resolve(currentPrice);
-			},
-		});
-	});
+const getPrice = async function () {
+	const dataJson = await fetch(
+		`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coin}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
+	);
+	const data = await dataJson.json();
+	currentPrice = data[0]["current_price"];
+	curPriceBuy.value = currentPrice;
+	curPriceSell.value = currentPrice;
+	priceActive = true;
 };
 
 const calculateAmt = function (value) {
