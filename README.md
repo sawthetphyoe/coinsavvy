@@ -1,4 +1,5 @@
 # Coinsavvy
+<<<<<<< HEAD
 
 Cryptocurrency Simulation Web App
 
@@ -6,6 +7,11 @@ Cryptocurrency Simulation Web App
 
 #### Description:
 
+=======
+Cryptocurrency Simulation Web App
+#### Video Demo : https://www.youtube.com/watch?v=4AqhFCvI3Bc
+#### Description:
+>>>>>>> 3d70ef9101fc18ff05575cf3302e8a257d2a9281
 This is a cryptocurrency simulation web application using flask, pyhton and SQLite for backend and HTML, CSS and JavaScript for frontend.
 Market information are obtained using Coingecko API and market charts are embedded form Trading View.
 All market information are automatically updated every 6s.
